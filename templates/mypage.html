@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Park Review</title>
+
+    <!-- 제이쿼리 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- 부트스트랩 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+
+
+
+    <script>
+        $(document).ready(function () {
+            get_parks_list("all")
+        })
+
+        function get_parks_list(parkId) {
+            console.log('Send GET request to:\n/getParks/' + parkId);
+            $.ajax({
+                type: "GET",
+                url: `/getMyParks/${parkId}`,
+                data: {},
+                success: function (response) {
+                    console.log(response);
+                }
+            })
+        }
+
+        function get_parks_reviews(parkId) {
+            console.log('Send GET request to:\n/getMyReviews/' + parkId);
+            $.ajax({
+                type: "GET",
+                url: `/getMyReviews/${parkId}`,
+                data: {},
+                success: function (response) {
+                    console.log(response);
+                }
+            })
+        }
+    </script>
+    <style>
+        ul,
+        li {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            color: inherit;
+        }
+
+        li {
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #555;
+        }
+
+        .role-button {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .role-button:hover {
+            background: #eee;
+        }
+
+        .myPark {
+            margin-top: 30px;
+        }
+
+        .parks,
+        .reviews {
+            justify-content: center;
+            gap: 10px;
+            padding-top: 20px;
+        }
+        .reviews > * {
+            width: 70%;
+        }
+
+        .mypage-contents {
+            display: flex;
+        }
+
+        .mypage-contents aside {
+            flex: 1 1 20%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .mypage-contents .myPark {
+            flex: 1 1 80%;
+        }
+
+        .selectCard {
+            display: flex;
+            padding: 0 3em;
+        }
+
+        .selectCard>* {
+            flex: 1 1 33%;
+        }
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .weather-box {
+            height: 150px;
+            width: 150px;
+            text-align: center;
+            background: pink;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <header></header>
+        <section class="mypage-contents">
+            <aside>
+                <ul>
+                    <li>안녕하세요.
+                        <strong>{{ users.username }}</strong>님
+                        <br>
+                        @{{ users.userId }}
+                        <hr>
+                        나의 리뷰 확인하기 ▼
+                    </li>
+                    <li class="role-button" onclick="get_parks_reviews('all')">
+                        공원 전체 리뷰
+                    </li>
+                    {% for park in parks %}
+                    <li class="role-button" onclick="get_parks_reviews('{{ park.parkId }}')">
+                        {{ park.parkName }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </aside>
+            <div class="myPark">
+                <div class="selectCard">
+                    <div class="card text-center role-button" onclick="get_parks_list('all')">
+                        <div class="card-body">
+                            전체 공원
+                        </div>
+                    </div>
+                    <div class="card text-center role-button" onclick="get_parks_list('finished')">
+                        <div class="card-body">
+                            🏁 완주 공원
+                        </div>
+                    </div>
+                    <div class="card text-center role-button" onclick="get_parks_list('favorite')">
+                        <div class="card-body">
+                            ❤ 즐겨찾는 공원
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="parks row">
+                    {% for park in parks %}
+                    <div class="card text-center" style="width: 30%;">
+                        <div class="card-body">
+                            <div>
+                                <h5 class="card-title">
+                                    {% if park.favorite == 1 %}
+                                    ❤
+                                    {% endif %}
+                                    {% if park.finished == 1 %}
+                                    🏁
+                                    {% endif %}
+                                    <br>
+                                    {{ park.parkName }}
+                                </h5>
+                                <p class="card-text">
+                                    {{ park.parkLocation }}
+                                    <hr>
+                                    {{ park.parkDesc }}
+                                </p>
+                            </div>
+                            <a href="/park/{{ park.parkId }}" class="btn btn-primary">공원 정보</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+
+                </div>
+
+                <div class="reviews row">
+                    {% for review in users.reviews %}
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {{review.comment}}
+                            </h5>
+                            <p class="card-text">
+                                {% for park in parks %}
+                                    {% if park.parkId == review.parkId %}
+                                        {{ park.parkName }}
+                                    {% endif %}
+                                {% endfor %}
+                                |
+                                rate: {{review.rate}}
+                                {% if review.rate == 5 %}
+                                    {{ "⭐" * 5 }}
+                                {% elif review.rate == 4 %}
+                                    {{ "⭐" * 4 }}
+                                {% elif review.rate == 3 %}
+                                    {{ "⭐" * 3 }}
+                                {% elif review.rate == 2 %}
+                                    {{ "⭐" * 2 }}
+                                {% elif review.rate == 1 %}
+                                    {{ "⭐" * 1 }}
+                                {% else %}
+                                    😡
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        <footer>
+
+            <!-- 코드 샘플 -->
+            <div class="weather-box">
+                <div id="weather" class="weather"></div>
+            </div>
+            <script>
+                const API_KEY='a2e8922539a2e4f37866cc7d173c8be2'
+                const weatherResetTime=10*60*1000
+
+                setInterval(()=>{
+                    askForCoords();
+                }, weatherResetTime)
+
+                askForCoords();
+                function askForCoords() {
+                    navigator.geolocation.getCurrentPosition(handleGeoSucces, handleGeoError);
+                }
+
+                function handleGeoSucces(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    getWeather(latitude, longitude);
+                }
+
+                function handleGeoError() {
+                    console.log('위치를 찾을 수 없습니다.');
+                }
+
+                function getWeather(lat, lon) {
+                    fetch
+                    fetch(
+                            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+                        )
+                        .then((response)=>{
+                            return response.json();
+                        })
+                        .then((json)=>{
+                            const temparature = json.main.temp;
+                            const place = json.name;
+                            const string = json.weather[0].main.toLowerCase();
+                            console.log(string.toLowerCase());
+                            const icon = json.weather[0].icon;
+
+                            weather.innerHTML =
+                                `
+                            <strong>${temparature.toFixed(1)}℃</strong>
+                            <img src="http://openweathermap.org/img/wn/${icon}@2x.png" />`;
+                        });
+                }
+            </script>
+            <!-- 코드 샘플 -->
+
+
+        </footer>
+    </div>
+</body>
+
+</html>
