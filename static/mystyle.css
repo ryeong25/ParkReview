@@ -11,7 +11,7 @@ body {
 }
 /*Bulma CSS 스타일 - 메인페이지 섹션 */
 .section-main {
-    width: 600px;
+    /*width: 400px;*/
     max-width: 100vw;
     margin: auto;
 }
@@ -45,4 +45,9 @@ input::-webkit-calendar-picker-indicator {
     object-fit:cover;
     width:100%;
     height:100%;
+}
+
+.container {
+    margin: 10px auto;
+    max-width: 100vw;
 }
