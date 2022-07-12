@@ -1,13 +1,15 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
 from pymongo import MongoClient
 import jwt
 import datetime
 import hashlib
-# 샘플 데이터
+from flask import Flask, render_template, jsonify, request, redirect, url_for
+from werkzeug.utils import secure_filename
+from datetime import datetime, timedelta
+
 app = Flask(__name__)
 
 
-client = MongoClient(mongodb+srv://Sparta:SpArTae8737be698@cluster0.licyu.mongodb.net/?retryWrites=true&w=majority)
+client = MongoClient('mongodb+srv://Sparta:SpArTae8737be698@cluster0.licyu.mongodb.net/?retryWrites=true&w=majority')
 db = client.parkReview
 SECRET_KEY = 'sparta'
 
@@ -16,7 +18,7 @@ def mypage():
     return render_template("mypage.html")
 
 @app.route('/park/<parkId>')
-def park(parkId):
+def park(userId,parkId):
     return render_template("park.html", userId=userId, parkId=parkId)
 
 
