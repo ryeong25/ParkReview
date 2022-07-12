@@ -24,9 +24,9 @@ def detail():
 def main():
     return render_template("mainpage.html")
 
-@app.route('/park/<parkId>')
-def park(parkId):
-    return render_template("park.html", parkId=parkId)
+@app.route('/park')
+def park():
+    return render_template("park.html")
 
 @app.route('/header')
 def header():
