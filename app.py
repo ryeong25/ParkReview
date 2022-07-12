@@ -65,6 +65,8 @@ def getMyParks(parkId):
     parks=list(db.Parks.find({}))
     currList=parks
 
+    print(parkId)
+
     return render_template("mypage.html", user=user, parks=parks, currList=currList, parkId=parkId)
 
 # 나의 리뷰
