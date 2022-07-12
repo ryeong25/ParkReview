@@ -101,6 +101,11 @@
                         <div class="card-body">
                             <a href="/mypage/myParks/finished">
                                 🏁 완주 공원
+                                {% for chk in user.parkCheck %}
+                                    {% if chk['finished'] == 1 %}
+                                        <span style="font-size: 10px;">⭐</span>
+                                    {% endif %}
+                                {% endfor %}
                             </a>
                         </div>
                     </div>
@@ -207,6 +212,7 @@
                 <div class="reviews row">
                     <!-- 리뷰 전체 -->
                     {% if parkId == 'all' %}
+                        <h1>리뷰 {{ currList['reviews'] | length }}개</h1>
                         {% for review in currList['reviews'] %}
                             {% for park in parks %}
                                 {% if park.parkId == review.parkId %}
@@ -247,11 +253,13 @@
                     <!-- 현재 review의 parkId값과 현재 페이지의 id값이 같으면 매치되는 리스트인데 -->
                     <!-- 위의 값이 parkId의 공원 id값과 같다면 출력한다.-->
 
-                    {% set pageId= parkId | int %}
+                    {% set pageId = parkId | int %}
+                    <!-- <h1>리뷰 {{ currList['reviews'] | length }}개</h1> -->
                     {% for review in currList['reviews'] %} 
                         {% if review.parkId - pageId == 0 %}
                             {% for park in parks %}
                                 {% if park.parkId == review.parkId %}
+                                
                                 <div class="card text-center">
                                     <div class="card-body">
                                         <h5 class="card-title">
@@ -281,7 +289,6 @@
                                 </div>
                                 {% endif %}
                             {% endfor %}
-
                         {% endif %}
                     {% endfor %}
                 {% endif %}
@@ -304,16 +311,18 @@
             </div>
 
         </footer>
-        <!-- <script>
-            $(document).ready(function () {
-                let chk_load = 0;
-                if(!chk_load){
-                    $("#header").load("./header");  // 원하는 파일 경로를 삽입하면 된다
-                    $("#footer").load("./footer");  // 추가 인클루드를 원할 경우 이런식으로 추가
-                    chk_load=!chk_load;
-                }
-            });
-        </script> -->
+        <script>
+            // $(document).ready(function () {
+            //     let chk_load = 0;
+            //     if(!chk_load){
+            //         $("#header").load("./header", function(){
+            //             $("#footer").load("./footer");
+            //         });  // 원하는 파일 경로를 삽입하면 된다
+            //           // 추가 인클루드를 원할 경우 이런식으로 추가
+            //         chk_load=!chk_load;
+            //     }
+            // });
+        </script>
     </div>
 </body>
 
