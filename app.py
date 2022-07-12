@@ -171,7 +171,7 @@ def getMyParks(parkId):
     parks=list(db.Parks.find({}))
     currList=parks
 
-    print('here')
+    print(parkId)
 
     return render_template("mypage.html", user=user, parks=parks, currList=currList, parkId=parkId)
 
@@ -179,11 +179,10 @@ def getMyParks(parkId):
 @app.route('/mypage/myReviews/<parkId>')
 def getMyReviews(parkId):
     user=db.Users.find_one({'userId': 0})
-    parks=db.Parks.find({})
+    parks=list(db.Parks.find({}))
 
     userReviewId=user['reviewId']
     reviews=db.Reviews.find_one({'reviewId': userReviewId})
-    print(reviews)
 
     return render_template("mypage.html", user=user, parks=parks, currList=reviews, parkId=parkId)
 
