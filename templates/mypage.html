@@ -18,7 +18,7 @@
     
     <!--  css_style -->
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
-    <link href="../static/CSS/mystyle.css" rel="stylesheet">
+    <!-- <link href="../static/CSS/mystyle.css" rel="styslesheet"> -->
     
     <!-- Bulma CSS 링크 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
@@ -28,16 +28,6 @@
     <link href="{{ url_for('static', filename='mystyle.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='mypage.css') }}" rel="stylesheet">
 
-    <script>
-
-        function get_parks_list(parkId) {
-            location.href=`/mypage/myParks/${parkId}`
-        }
-        function get_parks_reviews(parkId) {
-            location.href=`/mypage/myReviews/${parkId}`
-        }
-        
-    </script>
 </head>
 
 <body>
@@ -83,12 +73,16 @@
                                 나의 리뷰를 확인하려면 클릭하세요.
                             </span>
                         </li>
-                        <li class="role-button" onclick="get_parks_reviews('all')">
-                            공원 전체 리뷰
+                        <li class="role-button">
+                            <a href="/mypage/myReviews/all">
+                                공원 전체 리뷰
+                            </a>
                         </li>
                         {% for park in parks %}
-                            <li class="role-button" onclick="get_parks_reviews('{{ park.parkId }}')">
-                                {{ park.parkName }}
+                            <li class="role-button">
+                                <a href="/mypage/myReviews/{{ park.parkId }}">
+                                    {{ park.parkName }}
+                                </a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -96,19 +90,25 @@
             </div>
             <div class="myPark">
                 <div class="selectCard">
-                    <div class="card text-center role-button" onclick="get_parks_list('all')">
+                    <div class="card text-center role-button">
                         <div class="card-body">
-                            전체 공원
+                            <a href="/mypage/myParks/all">
+                                전체 공원
+                            </a>
                         </div>
                     </div>
-                    <div class="card text-center role-button" onclick="get_parks_list('finished')">
+                    <div class="card text-center role-button">
                         <div class="card-body">
-                            🏁 완주 공원
+                            <a href="/mypage/myParks/finished">
+                                🏁 완주 공원
+                            </a>
                         </div>
                     </div>
-                    <div class="card text-center role-button" onclick="get_parks_list('favorite')">
+                    <div class="card text-center role-button">
                         <div class="card-body">
-                            ❤ 즐겨찾는 공원
+                            <a href="/mypage/myParks/favorite">
+                                ❤ 즐겨찾는 공원
+                            </a>
                         </div>
                     </div>
                 </div>
