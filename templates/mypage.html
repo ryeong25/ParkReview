@@ -262,43 +262,88 @@
                 </div>
                 {% endif %}
                 <!-- 리뷰 -->
-                {{ currList }}
                 {% if 'reviewId' in currList %}
                 <div class="reviews row">
-                    {% for review in currList['reviews'] %}
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                {{ review.comment }}
-                            </h5>
-                            <p class="card-text">
-                                {% for park in parks %}
-                                    {{}}
-                                    {% if park.parkId == review.parkId %}
-                                        {{ park.parkName }}
-                                    {% endif %}
-                                {% endfor %}
-                                |
-                                {{ review.weather }}
-                                |
-                                rate: {{review.rate}}
-                                {% if review.rate == 5 %}
-                                    {{ "⭐" * 5 }}
-                                {% elif review.rate == 4 %}
-                                    {{ "⭐" * 4 }}
-                                {% elif review.rate == 3 %}
-                                    {{ "⭐" * 3 }}
-                                {% elif review.rate == 2 %}
-                                    {{ "⭐" * 2 }}
-                                {% elif review.rate == 1 %}
-                                    {{ "⭐" * 1 }}
-                                {% else %}
-                                    😡
+                    <!-- 리뷰 전체 -->
+                    {% if parkId == 'all' %}
+                        {% for review in currList['reviews'] %}
+                            {% for park in parks %}
+                                {% if park.parkId == review.parkId %}
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            {{ review.comment }}
+                                        </h5>
+                                        <p class="card-text">
+                                            {{ park.parkName }}
+                                            |
+                                            {{ review.weather }}
+                                            |
+                                            rate: {{review.rate}}
+                                            {% if review.rate == 5 %}
+                                                {{ "⭐" * 5 }}
+                                            {% elif review.rate == 4 %}
+                                                {{ "⭐" * 4 }}
+                                            {% elif review.rate == 3 %}
+                                                {{ "⭐" * 3 }}
+                                            {% elif review.rate == 2 %}
+                                                {{ "⭐" * 2 }}
+                                            {% elif review.rate == 1 %}
+                                                {{ "⭐" * 1 }}
+                                            {% else %}
+                                                😡
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                </div>
                                 {% endif %}
-                            </p>
-                        </div>
-                    </div>
+                            {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                    <!-- 리뷰 공원별 -->
+	                <!-- parkId가 all이 아니라 공원의 id값일 때 -->
+                    <!-- for문으로 reviews의 review 배열을 돌리는데 -->
+                    <!-- 현재 review의 parkId값과 현재 페이지의 id값이 같으면 매치되는 리스트인데 -->
+                    <!-- 위의 값이 parkId의 공원 id값과 같다면 출력한다.-->
+
+                    {% set pageId= parkId | int %}
+                    {% for review in currList['reviews'] %} 
+                        {% if review.parkId - pageId == 0 %}
+                            {% for park in parks %}
+                                {% if park.parkId == review.parkId %}
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            {{ review.comment }}
+                                        </h5>
+                                        <p class="card-text">
+                                            {{ park.parkName }}
+                                            |
+                                            {{ review.weather }}
+                                            |
+                                            rate: {{review.rate}}
+                                            {% if review.rate == 5 %}
+                                                {{ "⭐" * 5 }}
+                                            {% elif review.rate == 4 %}
+                                                {{ "⭐" * 4 }}
+                                            {% elif review.rate == 3 %}
+                                                {{ "⭐" * 3 }}
+                                            {% elif review.rate == 2 %}
+                                                {{ "⭐" * 2 }}
+                                            {% elif review.rate == 1 %}
+                                                {{ "⭐" * 1 }}
+                                            {% else %}
+                                                😡
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+
+                        {% endif %}
                     {% endfor %}
+                {% endif %}
                 </div>
                 {% endif %}
             </div>
@@ -306,9 +351,9 @@
         <footer id="footer">
 
             <!-- 코드 샘플 -->
-            <div class="weather-box">
+            <!-- <div class="weather-box">
                 <div id="weather" class="weather"></div>
-            </div>
+            </div> -->
             <script>
                 const API_KEY='a2e8922539a2e4f37866cc7d173c8be2'
                 const weatherResetTime=10*60*1000
