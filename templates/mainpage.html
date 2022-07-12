@@ -14,6 +14,7 @@
           crossorigin="anonymous">
     <!--JQuery 관련 CDN Link    -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
     <!--  css_style -->
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
@@ -21,17 +22,18 @@
 
     <!-- Bulma CSS 링크 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- Font Awesome CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     {#style css 파일 불러오기 (bulma css보다 아래 위치)#}
     <link href="{{ url_for('static', filename='mystyle.css') }}" rel="stylesheet">
 
-    <style>
-
-    </style>
-
 </head>
 <body>
+    {#----------------header----------------#}
     <section id="header"></section>
+    {#----------------main 공간=----------------#}
     <section class="section-main">
+        {# ----------main 카드들-------------#}
         <div class="container">
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 <div class="col">
@@ -44,6 +46,28 @@
                         <div class="card-body">
                             <h5 class="card-title">(해당공원날씨)</h5>
                             <p class="title is-4">장미공원</p>
+                            <p class="subtitle is-6"> 입문자용 코스 </p>
+                            <div class="content">
+                                장미가 피어있는 공원
+                                <a href="#">#장미</a> <a href="#">#산책</a> <a href="#">#운동</a>
+
+                                <br>
+                            </div>
+                            <button href="#" class="button is-success is-light is-rounded ">달리러가기</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="https://img.insight.co.kr/static/2019/04/03/700/4cbsd123234t969i68d5.jpg" alt="Placeholder image">
+                            </figure>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">(해당공원날씨)</h5>
+                            <p class="title is-4">장미공원</p>
+                            <p class="subtitle is-6"> 적당한 코스 </p>
                             <div class="content">
                                 장미가 피어있는 공원
                                 <a href="#">#장미</a> <a href="#">#산책</a> <a href="#">#운동</a>
@@ -63,25 +87,7 @@
                         <div class="card-body">
                             <h5 class="card-title">(해당공원날씨)</h5>
                             <p class="title is-4">장미공원</p>
-                            <div class="content">
-                                장미가 피어있는 공원
-                                <a href="#">#장미</a> <a href="#">#산책</a> <a href="#">#운동</a>
-                                <br>
-                            </div>
-                            <button href="#" class="button is-success is-light is-rounded ">달리러가기</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-image">
-                            <figure class="image is-4by3">
-                                <img src="https://img.insight.co.kr/static/2019/04/03/700/4cbsd123234t969i68d5.jpg" alt="Placeholder image">
-                            </figure>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">(해당공원날씨)</h5>
-                            <p class="title is-4">장미공원</p>
+                            <p class="subtitle is-6"> 고수용 코스  </p>
                             <div class="content">
                                 장미가 피어있는 공원
                                 <a href="#">#장미</a> <a href="#">#산책</a> <a href="#">#운동</a>
@@ -92,8 +98,9 @@
                     </div>
                 </div>
             </div>
-            </div>
+        </div>
     </section>
+    {#----------------footer----------------#}
     <section id="footer"></section>
 
     <!--header/footer 삽입-->
@@ -102,7 +109,6 @@
             $("#header").load("./header");  // 원하는 파일 경로를 삽입하면 된다
             $("#footer").load("./footer");  // 추가 인클루드를 원할 경우 이런식으로 추가
         });
-
     </script>
 
 </body>
