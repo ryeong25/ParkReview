@@ -38,18 +38,27 @@
         
     </script>
     <style>
-        ul,
-        li {
+        .wrap {
+            min-height: calc(100vh - 5rem);
+        }
+        .mypage-contents ul,
+        .mypage-contents li {
             list-style: none;
             padding: 0;
             margin: 0;
             color: inherit;
         }
-
-        li {
+        .mypage-contents li {
             padding: 20px;
             text-align: center;
-            border: 1px solid #555;
+            background-color: transparent;
+            border-color: #48c774;
+            color: #48c774;
+            border-width: 2px;
+            border-bottom-style: dotted;
+        }
+        .mypage-contents li:last-child {
+            border-bottom: none;
         }
 
         .role-button {
@@ -58,7 +67,8 @@
         }
 
         .role-button:hover {
-            background: #eee;
+            background: #48c774;
+            color: #fff;
         }
 
         .myPark {
@@ -77,9 +87,15 @@
 
         .mypage-contents {
             display: flex;
+            min-height: 50vh;
         }
 
         .mypage-contents aside {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0 0 1px rgb(10 10 10 / 2%);
+            overflow: hidden;
+
             flex: 1 1 20%;
             display: flex;
             flex-direction: column;
@@ -93,6 +109,7 @@
         .selectCard {
             display: flex;
             padding: 0 3em;
+            gap: 10px;
         }
 
         .selectCard>* {
@@ -102,6 +119,9 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+        }
+        .mypage-contents .card {
+            border: none;
         }
         .weather-box {
             height: 150px;
@@ -118,27 +138,58 @@
 
 <body>
     <div class="wrap">
-        <header id="header"></header>
-        <section class="mypage-contents">
-            <aside>
-                <ul>
-                    <li>안녕하세요.
-                        <strong>{{ user.userName }}</strong>님
-                        <br>
-                        {{ user.email }}
-                        <hr>
-                        나의 리뷰 확인하기 ▼
-                    </li>
-                    <li class="role-button" onclick="get_parks_reviews('all')">
-                        공원 전체 리뷰
-                    </li>
-                    {% for park in parks %}
-                        <li class="role-button" onclick="get_parks_reviews('{{ park.parkId }}')">
-                            {{ park.parkName }}
+        <header>
+            <div class="mytitle">
+                <div class="container">
+                    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+                        <a href="/"
+                            class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                            <svg class="bi me-2" width="40" height="32">
+                                <use xlink:href="#bootstrap"></use>
+                            </svg>
+                            {# 로고/배너 #}
+                            <span class="fs-4">🏃달려라01🏃</span>
+                        </a>
+                        {# 로그인/회원가입 버튼 #}
+                        <ul class="nav nav-pills">
+                            {# <li class="nav-item"><a href="/logout" class="nav-link active" aria-current="page">login</a></li>
+                            <li class="nav-item"><a href="/signuppage" class="nav-link">SignUp</a></li>
+                            {# <button href="/loginpage" class="button is-success is-light is-rounded ">logIN</button>#}
+                            {#<li class="nav-item"><button href="/loginpage" class="button is-success is-light is-rounded ">logIn</button></li>#}
+
+                            <!-- use -->
+                            <button type="button" onclick="window.location.href='/logout'" class="button is-success is-outlined me-3">
+                                Logout
+                            </button>
+                        </ul>
+                    </header>
+                </div>
+            </div>
+        </header>
+        <section class="mypage-contents container">
+            <div>
+                <aside>
+                    <ul>
+                        <li>안녕하세요.
+                            <strong>{{ user.userName }}</strong>님
+                            <br>
+                            {{ user.email }}
+                            <hr>
+                            <span style="font-size: 10px">
+                                나의 리뷰를 확인하려면 클릭하세요.
+                            </span>
                         </li>
-                    {% endfor %}
-                </ul>
-            </aside>
+                        <li class="role-button" onclick="get_parks_reviews('all')">
+                            공원 전체 리뷰
+                        </li>
+                        {% for park in parks %}
+                            <li class="role-button" onclick="get_parks_reviews('{{ park.parkId }}')">
+                                {{ park.parkName }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </aside>
+            </div>
             <div class="myPark">
                 <div class="selectCard">
                     <div class="card text-center role-button" onclick="get_parks_list('all')">
@@ -334,59 +385,19 @@
                 {% endif %}
             </div>
         </section>
+        
         <footer id="footer">
-
-            <!-- 코드 샘플 -->
-            <!-- <div class="weather-box">
-                <div id="weather" class="weather"></div>
-            </div> -->
-            <!-- <script>
-                const API_KEY='a2e8922539a2e4f37866cc7d173c8be2'
-                const weatherResetTime=10*60*1000
-
-                setInterval(()=>{
-                    askForCoords();
-                }, weatherResetTime)
-
-                askForCoords();
-                function askForCoords() {
-                    navigator.geolocation.getCurrentPosition(handleGeoSucces, handleGeoError);
-                }
-
-                function handleGeoSucces(position) {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-                    getWeather(latitude, longitude);
-                }
-
-                function handleGeoError() {
-                    console.log('위치를 찾을 수 없습니다.');
-                }
-
-                function getWeather(lat, lon) {
-                    fetch
-                    fetch(
-                            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
-                        )
-                        .then((response)=>{
-                            return response.json();
-                        })
-                        .then((json)=>{
-                            const temparature = json.main.temp;
-                            const place = json.name;
-                            const string = json.weather[0].main.toLowerCase();
-                            console.log(string.toLowerCase());
-                            const icon = json.weather[0].icon;
-
-                            weather.innerHTML =
-                                `
-                            <strong>${temparature.toFixed(1)}℃</strong>
-                            <img src="http://openweathermap.org/img/wn/${icon}@2x.png" />`;
-                        });
-                }
-            </script> -->
-            <!-- 코드 샘플 -->
-
+            <div class="container-footer">
+                <footer class="py-3 my-4">
+                <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+                    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">용성령</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">김현지</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">두선아</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">최진광</a></li>
+                </ul>
+                <p class="text-center text-muted" >© 2022 항해 8기, F반4조 <a href="https://github.com/soularofdawn/ParkReview">ParkReview</a ></p>
+                </footer>
+            </div>
 
         </footer>
         <!-- <script>
