@@ -26,7 +26,10 @@ def main():
 
 @app.route('/park')
 def park():
-    return render_template("park.html")
+    user = db.Users.find_one({'userId': 0})
+    parks = list(db.Parks.find({}))
+    currList = parks
+    return render_template("park.html", user=user, parks=parks, currList=currList)
 
 @app.route('/header')
 def header():
