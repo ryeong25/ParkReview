@@ -30,6 +30,7 @@ review = {
     'reviews': [
         {
             'parkId': 2,
+            "courseId": 0,
             'rate': 1,
             'weather': "☔",
             'finished_at': '2022-02-01',
@@ -37,6 +38,7 @@ review = {
         }, 
         {
             'parkId': 0,
+            "courseId": 1,
             'rate': 5,
             'weather': "☀",
             'finished_at': '2022-02-02',
@@ -44,10 +46,27 @@ review = {
         }, 
         {
             'parkId': 1,
+            "courseId": 2,
             'rate': 4,
             'weather': "🌤",
             'finished_at': '2022-02-03',
             'comment': "100년된 배나무가 멋있다.",
+        }, 
+        {
+            'parkId': 0,
+            "courseId": 2,
+            'rate': 5,
+            'weather': "☀",
+            'finished_at': '2022-02-04',
+            'comment': "멋있다. 출구 근처에 웨이팅하는 도토리묵 맛집 있음!😄",
+        }, 
+        {
+            'parkId': 2,
+            "courseId": 1,
+            'rate': 4,
+            'weather': "☀",
+            'finished_at': '2022-02-05',
+            'comment': "한바퀴 둘러보기 좋습니다. 중간중간 의자가 많고 사진찍기 좋은 장소가 많이 있습니다.🚲",
         }
     ]
 }
