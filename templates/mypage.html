@@ -20,32 +20,36 @@
 
     <script>
         $(document).ready(function () {
-            get_parks_list("all")
+            // get_parks_list("all")
         })
 
         function get_parks_list(parkId) {
-            console.log('Send GET request to:\n/getParks/' + parkId);
-            $.ajax({
-                type: "GET",
-                url: `/getMyParks/${parkId}`,
-                data: {},
-                success: function (response) {
-                    console.log(response);
-                }
-            })
+            location.href=`/mypage/myParks/${parkId}`
+            // $.ajax({
+            //     type: "GET",
+            //     url: `mypage/myParks/${parkId}`,
+            //     data: {},
+            //     success: function (response) {
+            
+            //     }
+            // })
         }
 
         function get_parks_reviews(parkId) {
-            console.log('Send GET request to:\n/getMyReviews/' + parkId);
-            $.ajax({
-                type: "GET",
-                url: `/getMyReviews/${parkId}`,
-                data: {},
-                success: function (response) {
-                    console.log(response);
-                }
-            })
+            location.href=`/mypage/myReviews/${parkId}`
+            // $.ajax({
+            //     type: "GET",
+            //     url: `mypage/myReviews/${parkId}`,
+            //     data: {},
+            //     success: function (response) {
+            //     }
+            // })
         }
+        
+        // $(document).ready(function () {
+        //     $("#header").load("templates/header.html");  // 원하는 파일 경로를 삽입하면 된다
+        //     $("#footer").load("./footer");  // 추가 인클루드를 원할 경우 이런식으로 추가
+        // });
     </script>
     <style>
         ul,
@@ -128,14 +132,14 @@
 
 <body>
     <div class="wrap">
-        <header></header>
+        <header id="header"></header>
         <section class="mypage-contents">
             <aside>
                 <ul>
                     <li>안녕하세요.
-                        <strong>{{ users.username }}</strong>님
+                        <strong>{{ user.userName }}</strong>님
                         <br>
-                        @{{ users.userId }}
+                        {{ user.email }}
                         <hr>
                         나의 리뷰 확인하기 ▼
                     </li>
@@ -143,9 +147,9 @@
                         공원 전체 리뷰
                     </li>
                     {% for park in parks %}
-                    <li class="role-button" onclick="get_parks_reviews('{{ park.parkId }}')">
-                        {{ park.parkName }}
-                    </li>
+                        <li class="role-button" onclick="get_parks_reviews('{{ park.parkId }}')">
+                            {{ park.parkName }}
+                        </li>
                     {% endfor %}
                 </ul>
             </aside>
@@ -168,48 +172,114 @@
                     </div>
                 </div>
                 <hr>
+                <!-- 공원 -->
+                {% if 'parkId' in currList[0] %}
                 <div class="parks row">
-                    {% for park in parks %}
-                    <div class="card text-center" style="width: 30%;">
-                        <div class="card-body">
-                            <div>
-                                <h5 class="card-title">
-                                    {% if park.favorite == 1 %}
-                                    ❤
+                    {% for park in currList %}
+                        <!-- 즐겨찾기 -->
+                        {% if parkId == "favorite" %}
+                            {% for check in user.parkCheck %}
+                                {% if check.parkId == park.parkId %}
+                                    {% if check.favorite == 1 %}
+                                        <div class="card text-center" style="width: 30%;">
+                                            <div class="card-body">
+                                                <div>
+                                                    <h5 class="card-title">
+                                                        ❤
+                                                        <br>
+                                                        {{ park.parkName }}
+                                                    </h5>
+                                                    <p class="card-text">
+                                                        {{ park.parkLocation }}
+                                                        <hr>
+                                                        {{ park.parkDesc }}
+                                                    </p>
+                                                </div>
+                                                <a href="/park/{{ park.parkId }}" class="btn btn-primary">공원 정보</a>
+                                            </div>
+                                        </div>
                                     {% endif %}
-                                    {% if park.finished == 1 %}
-                                    🏁
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <!-- 완주 -->
+                        {% if parkId == "finished" %}
+                            {% for check in user.parkCheck %}
+                                {% if check.parkId == park.parkId %}
+                                    {% if check.finished == 1 %}
+                                        <div class="card text-center" style="width: 30%;">
+                                            <div class="card-body">
+                                                <div>
+                                                    <h5 class="card-title">
+                                                        🏁
+                                                        <br>
+                                                        {{ park.parkName }}
+                                                    </h5>
+                                                    <p class="card-text">
+                                                        {{ park.parkLocation }}
+                                                        <hr>
+                                                        {{ park.parkDesc }}
+                                                    </p>
+                                                </div>
+                                                <a href="/park/{{ park.parkId }}" class="btn btn-primary">공원 정보</a>
+                                            </div>
+                                        </div>
                                     {% endif %}
-                                    <br>
-                                    {{ park.parkName }}
-                                </h5>
-                                <p class="card-text">
-                                    {{ park.parkLocation }}
-                                    <hr>
-                                    {{ park.parkDesc }}
-                                </p>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <!-- 전체 -->
+                        {% if parkId == "all" %}
+                        <div class="card text-center" style="width: 30%;">
+                            <div class="card-body">
+                                <div>
+                                    <h5 class="card-title">
+    
+                                        {% for check in user.parkCheck %}
+                                            {% if check.parkId == park.parkId %}
+                                                {% if check.favorite == 1 %}
+                                                    ❤
+                                                {% endif %}
+                                                {% if check.finished == 1 %}
+                                                    🏁
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        <br>
+                                        {{ park.parkName }}
+                                    </h5>
+                                    <p class="card-text">
+                                        {{ park.parkLocation }}
+                                        <hr>
+                                        {{ park.parkDesc }}
+                                    </p>
+                                </div>
+                                <a href="/park/{{ park.parkId }}" class="btn btn-primary">공원 정보</a>
                             </div>
-                            <a href="/park/{{ park.parkId }}" class="btn btn-primary">공원 정보</a>
                         </div>
-                    </div>
+                        {% endif %}
                     {% endfor %}
-
-
                 </div>
-
+                {% endif %}
+                <!-- 리뷰 -->
+                {{ currList }}
+                {% if 'reviewId' in currList %}
                 <div class="reviews row">
-                    {% for review in users.reviews %}
+                    {% for review in currList['reviews'] %}
                     <div class="card text-center">
                         <div class="card-body">
                             <h5 class="card-title">
-                                {{review.comment}}
+                                {{ review.comment }}
                             </h5>
                             <p class="card-text">
                                 {% for park in parks %}
+                                    {{}}
                                     {% if park.parkId == review.parkId %}
                                         {{ park.parkName }}
                                     {% endif %}
                                 {% endfor %}
+                                |
+                                {{ review.weather }}
                                 |
                                 rate: {{review.rate}}
                                 {% if review.rate == 5 %}
@@ -230,9 +300,10 @@
                     </div>
                     {% endfor %}
                 </div>
+                {% endif %}
             </div>
         </section>
-        <footer>
+        <footer id="footer">
 
             <!-- 코드 샘플 -->
             <div class="weather-box">
