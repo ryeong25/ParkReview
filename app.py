@@ -36,6 +36,26 @@ def header():
 def footer():
     return render_template('footer.html')
 
+# [회원가입 API]
+# id, pw, nickname, email을 받아서, mongoDB에 저장합니다.
+# 저장하기 전에, pw를 sha256 방법(=단방향 암호화. 풀어볼 수 없음)으로 암호화해서 저장합니다.
+@app.route('/api/register', methods=['POST'])
+def api_register():
+    id_receive = request.form['id_give']
+    email_receive = request.form['email_give']
+    nickname_receive = request.form['nickname_give']
+    pw_receive = request.form['pw_give']
+
+    pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
+
+    db.user.insert_one(
+        {'userId': id_receive,
+         'email': email_receive,
+         'userName': nickname_receive,
+         'password': pw_hash })
+
+    return jsonify({'result': 'success'})
+
 @app.route('/user/userId')
 def user(username):
     # 각 사용자의 프로필과 글을 모아볼 수 있는 공간
