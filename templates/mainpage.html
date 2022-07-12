@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>F반4조 <제목></title>
 
     <!--부트스트랩 관련 CDN Link    -->
@@ -18,16 +19,45 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
     <link href="../static/CSS/mainpage.css" rel="stylesheet">
 
+    <!-- Bulma CSS 링크 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    {#style css 파일 불러오기 (bulma css보다 아래 위치)#}
+    <link href="{{ url_for('static', filename='mystyle.css') }}" rel="stylesheet">
+
+    <style>
+
+    </style>
+
 </head>
 <body>
     <div id="header"></div>
-    <main>
-        <h1> 메인페이지 예정입니다 </h1>
+    <section class="section-main">
+        <div class="container">
+            <h1 class="title">메인페이지</h1>
+            <h2 class="subtitle">공원</h2>
+            <div class="card">
+                <div class="card-image">
+                    <figure class="image is-4by3">
+                        <img src="https://img.insight.co.kr/static/2019/04/03/700/4cbsd123234t969i68d5.jpg" alt="Placeholder image">
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-content">
+                            <p class="title is-4">장미공원</p>
+                        </div>
+                    </div>
 
-    </main>
-    <div id="footer">
-
-    </div>
+                    <div class="content">
+                        장미가 피어있는 공원
+                        <a href="#">#장미</a> <a href="#">#산책</a> <a href="#">#운동</a>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="footer"></div>
 
     <!--header/footer 삽입-->
     <script>
