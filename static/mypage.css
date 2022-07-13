@@ -9,6 +9,15 @@
     margin: 0;
     color: inherit;
 }
+
+.mypage-contents {
+    flex-wrap: wrap;
+}
+
+.mypage-contents > div {
+    padding-top: 20px;
+}
+
 .mypage-contents li {
     padding: 20px;
     text-align: center;
@@ -32,8 +41,10 @@
     color: #fff;
 }
 
-.myPark {
-    margin-top: 30px;
+.role-button a {
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
 .parks,
@@ -64,7 +75,7 @@
 }
 
 .mypage-contents .myPark {
-    flex: 1 1 80%;
+    flex: 1 1 78%;
 }
 
 .selectCard {
@@ -93,4 +104,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+@media (max-width: 900px) {
+    .mypage-contents {
+        justify-content: center;
+    }
+    .selectCard {
+        flex-wrap: wrap;
+    }
 }

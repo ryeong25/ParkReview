@@ -44,7 +44,7 @@
                             </figure>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title"><div id="weather"></div></h5>
+                            <h5 class="card-title"><div id="weather0"></div></h5>
                             <p class="title is-4">망원 한강공원</p>
                             <p class="subtitle is-6"> 입문자용 코스 </p>
                             <div class="content">
@@ -65,7 +65,7 @@
                             </figure>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title"></h5>
+                            <h5 class="card-title"><div id="weather1"></div></h5>
                             <p class="title is-4">여의도 한강공원</p>
                             <p class="subtitle is-6"> 적당한 코스 </p>
                             <div class="content">
@@ -87,7 +87,7 @@
                             </figure>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title"></h5>
+                            <h5 class="card-title"><div id="weather2"></div></h5>
                             <p class="title is-4">석촌호수공원</p>
                             <p class="subtitle is-6"> 고수용 코스 </p>
                             <div class="content">
@@ -107,6 +107,11 @@
     <section id="footer"></section>
 
     <!--header/footer 삽입-->
+
+{#    {% for parks in all_parks %}#}
+{#        <span onclick=someFunction({{ item|safe }});>{{ item }}</span>#}
+{#    {% endfor %}#}
+
     <script>
         $(document).ready(function () {
             $("#header").load("./header");  // 원하는 파일 경로를 삽입하면 된다
@@ -117,13 +122,15 @@
         const API_KEY = 'b23c8020d88635be966aa7e1d3803114'
 
         // 위도, 경도
-        const latitude = 37.55085;
-        const longitude = 126.901;
+        {#const latitude =  ;#}
+        {#const longitude = ;#}
 
-        getWeather(latitude, longitude);
+        getWeather(37.55085, 126.90168 ,'weather0');
+        getWeather(37.53104, 126.92889 ,'weather1');
+        getWeather(37.51221, 127.10468,'weather2');
 
         // 함수실행
-        function getWeather(lat, lon) {
+        function getWeather(lat, lon , box) {
             fetch(
                 `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
             )
@@ -134,10 +141,24 @@
                     const temparature = json.main.temp;
                     const icon = json.weather[0].icon;
 
-                    weather.innerHTML =
-                        `
-                <img src="http://openweathermap.org/img/wn/${icon}@2x.png"/>
-                <strong>${temparature.toFixed(1)}℃</strong>`;
+                    if (box == 'weather0') {
+                        weather0.innerHTML = `
+                            <img src="http://openweathermap.org/img/wn/${icon}@2x.png"/>
+                            <strong>${temparature.toFixed(1)}℃</strong>`;
+                    } else if (box == 'weather1') {
+                        weather1.innerHTML = `
+                            <img src="http://openweathermap.org/img/wn/${icon}@2x.png"/>
+                            <strong>${temparature.toFixed(1)}℃</strong>`;
+                    } else if (box == 'weather2') {
+                        weather2.innerHTML = `
+                            <img src="http://openweathermap.org/img/wn/${icon}@2x.png"/>
+                            <strong>${temparature.toFixed(1)}℃</strong>`;
+                    }
+
+                {#    weather.innerHTML =#}
+                {#        `#}
+                {#<img src="http://openweathermap.org/img/wn/${icon}@2x.png"/>#}
+                {#<strong>${temparature.toFixed(1)}℃</strong>`;#}
                 });
         }
     </script>

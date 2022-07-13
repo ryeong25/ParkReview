@@ -3,7 +3,7 @@ import certifi
 import jwt
 import datetime
 import hashlib
-from flask import Flask, render_template, jsonify, request, redirect, url_for
+from flask import Flask, render_template, jsonify, request, redirect, url_for , json
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 
@@ -20,6 +20,7 @@ db = client.parkReview
 
 @app.route('/')
 def main():
+    # all_parks = list(db.Parks.find({}, {'_id': False}))
     return render_template("mainpage.html")
 
 @app.route('/parkpage/<parkId>')
@@ -151,7 +152,7 @@ def mypage():
     parks=list(db.Parks.find({'parkId': 0}))
     currList=parks
 
-    return render_template("mypage.html", user=user, parks=parks, currList=currList, parkId="all")
+    return redirect('/mypage/myParks/all')
 
 # 나의 공원
 @app.route('/mypage/myParks/<parkId>')
@@ -168,11 +169,10 @@ def getMyParks(parkId):
 @app.route('/mypage/myReviews/<parkId>')
 def getMyReviews(parkId):
     user=db.Users.find_one({'userId': 0})
-    parks=db.Parks.find({})
+    parks=list(db.Parks.find({}))
 
     userReviewId=user['reviewId']
     reviews=db.Reviews.find_one({'reviewId': userReviewId})
-    print(reviews)
 
     return render_template("mypage.html", user=user, parks=parks, currList=reviews, parkId=parkId)
 
