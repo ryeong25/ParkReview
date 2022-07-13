@@ -5,51 +5,37 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Park Review</title>
+    <title>Park Review | 공원 정보</title>
 
     <!-- 제이쿼리 -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <!-- 부트스트랩 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-    </script>
-
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    
+    <!--  css_style -->
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+    <link href="../static/CSS/mystyle.css" rel="stylesheet">
+    
+    <!-- Bulma CSS 링크 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- Font Awesome CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    {#style css 파일 불러오기 (bulma css보다 아래 위치)#}
+    <link href="{{ url_for('static', filename='mystyle.css') }}" rel="stylesheet">
 
     <script>
-        $(document).ready(function () {
-            // get_parks_list("all")
-        })
 
         function get_parks_list(parkId) {
             location.href=`/mypage/myParks/${parkId}`
-            // $.ajax({
-            //     type: "GET",
-            //     url: `mypage/myParks/${parkId}`,
-            //     data: {},
-            //     success: function (response) {
-            
-            //     }
-            // })
         }
-
         function get_parks_reviews(parkId) {
             location.href=`/mypage/myReviews/${parkId}`
-            // $.ajax({
-            //     type: "GET",
-            //     url: `mypage/myReviews/${parkId}`,
-            //     data: {},
-            //     success: function (response) {
-            //     }
-            // })
         }
         
-        // $(document).ready(function () {
-        //     $("#header").load("templates/header.html");  // 원하는 파일 경로를 삽입하면 된다
-        //     $("#footer").load("./footer");  // 추가 인클루드를 원할 경우 이런식으로 추가
-        // });
     </script>
     <style>
         ul,
@@ -97,7 +83,7 @@
             flex: 1 1 20%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
         }
 
         .mypage-contents .myPark {
@@ -262,43 +248,88 @@
                 </div>
                 {% endif %}
                 <!-- 리뷰 -->
-                {{ currList }}
                 {% if 'reviewId' in currList %}
                 <div class="reviews row">
-                    {% for review in currList['reviews'] %}
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                {{ review.comment }}
-                            </h5>
-                            <p class="card-text">
-                                {% for park in parks %}
-                                    {{}}
-                                    {% if park.parkId == review.parkId %}
-                                        {{ park.parkName }}
-                                    {% endif %}
-                                {% endfor %}
-                                |
-                                {{ review.weather }}
-                                |
-                                rate: {{review.rate}}
-                                {% if review.rate == 5 %}
-                                    {{ "⭐" * 5 }}
-                                {% elif review.rate == 4 %}
-                                    {{ "⭐" * 4 }}
-                                {% elif review.rate == 3 %}
-                                    {{ "⭐" * 3 }}
-                                {% elif review.rate == 2 %}
-                                    {{ "⭐" * 2 }}
-                                {% elif review.rate == 1 %}
-                                    {{ "⭐" * 1 }}
-                                {% else %}
-                                    😡
+                    <!-- 리뷰 전체 -->
+                    {% if parkId == 'all' %}
+                        {% for review in currList['reviews'] %}
+                            {% for park in parks %}
+                                {% if park.parkId == review.parkId %}
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            {{ review.comment }}
+                                        </h5>
+                                        <p class="card-text">
+                                            {{ park.parkName }}
+                                            |
+                                            {{ review.weather }}
+                                            |
+                                            rate: {{review.rate}}
+                                            {% if review.rate == 5 %}
+                                                {{ "⭐" * 5 }}
+                                            {% elif review.rate == 4 %}
+                                                {{ "⭐" * 4 }}
+                                            {% elif review.rate == 3 %}
+                                                {{ "⭐" * 3 }}
+                                            {% elif review.rate == 2 %}
+                                                {{ "⭐" * 2 }}
+                                            {% elif review.rate == 1 %}
+                                                {{ "⭐" * 1 }}
+                                            {% else %}
+                                                😡
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                </div>
                                 {% endif %}
-                            </p>
-                        </div>
-                    </div>
+                            {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                    <!-- 리뷰 공원별 -->
+	                <!-- parkId가 all이 아니라 공원의 id값일 때 -->
+                    <!-- for문으로 reviews의 review 배열을 돌리는데 -->
+                    <!-- 현재 review의 parkId값과 현재 페이지의 id값이 같으면 매치되는 리스트인데 -->
+                    <!-- 위의 값이 parkId의 공원 id값과 같다면 출력한다.-->
+
+                    {% set pageId= parkId | int %}
+                    {% for review in currList['reviews'] %} 
+                        {% if review.parkId - pageId == 0 %}
+                            {% for park in parks %}
+                                {% if park.parkId == review.parkId %}
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            {{ review.comment }}
+                                        </h5>
+                                        <p class="card-text">
+                                            {{ park.parkName }}
+                                            |
+                                            {{ review.weather }}
+                                            |
+                                            rate: {{review.rate}}
+                                            {% if review.rate == 5 %}
+                                                {{ "⭐" * 5 }}
+                                            {% elif review.rate == 4 %}
+                                                {{ "⭐" * 4 }}
+                                            {% elif review.rate == 3 %}
+                                                {{ "⭐" * 3 }}
+                                            {% elif review.rate == 2 %}
+                                                {{ "⭐" * 2 }}
+                                            {% elif review.rate == 1 %}
+                                                {{ "⭐" * 1 }}
+                                            {% else %}
+                                                😡
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+
+                        {% endif %}
                     {% endfor %}
+                {% endif %}
                 </div>
                 {% endif %}
             </div>
@@ -306,10 +337,10 @@
         <footer id="footer">
 
             <!-- 코드 샘플 -->
-            <div class="weather-box">
+            <!-- <div class="weather-box">
                 <div id="weather" class="weather"></div>
-            </div>
-            <script>
+            </div> -->
+            <!-- <script>
                 const API_KEY='a2e8922539a2e4f37866cc7d173c8be2'
                 const weatherResetTime=10*60*1000
 
@@ -353,11 +384,21 @@
                             <img src="http://openweathermap.org/img/wn/${icon}@2x.png" />`;
                         });
                 }
-            </script>
+            </script> -->
             <!-- 코드 샘플 -->
 
 
         </footer>
+        <!-- <script>
+            $(document).ready(function () {
+                let chk_load = 0;
+                if(!chk_load){
+                    $("#header").load("./header");  // 원하는 파일 경로를 삽입하면 된다
+                    $("#footer").load("./footer");  // 추가 인클루드를 원할 경우 이런식으로 추가
+                    chk_load=!chk_load;
+                }
+            });
+        </script> -->
     </div>
 </body>
 

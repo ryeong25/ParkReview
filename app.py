@@ -39,19 +39,6 @@ def header():
 def footer():
     return render_template('footer.html')
 
-@app.route('/user/userId')
-def user(username):
-    # 각 사용자의 프로필과 글을 모아볼 수 있는 공간
-    token_receive = request.cookies.get('mytoken')
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        status = (username == payload["id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
-
-        user_info = db.users.find_one({"username": username}, {"_id": False})
-        return render_template('user.html', user_info=user_info, status=status)
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
-
 # 마이페이지
 @app.route('/mypage')
 def mypage():
@@ -68,22 +55,18 @@ def getMyParks(parkId):
     parks=list(db.Parks.find({}))
     currList=parks
 
-    print('here')
-
     return render_template("mypage.html", user=user, parks=parks, currList=currList, parkId=parkId)
 
 # 나의 리뷰
 @app.route('/mypage/myReviews/<parkId>')
 def getMyReviews(parkId):
     user=db.Users.find_one({'userId': 0})
-    parks=db.Parks.find({})
+    parks=list(db.Parks.find({}))
 
     userReviewId=user['reviewId']
     reviews=db.Reviews.find_one({'reviewId': userReviewId})
-    print(reviews)
 
     return render_template("mypage.html", user=user, parks=parks, currList=reviews, parkId=parkId)
-
 
 @app.route('/api/checkLogin')
 def checkLogin():

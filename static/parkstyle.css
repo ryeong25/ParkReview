@@ -1,0 +1,32 @@
+
+.wrap {
+    background-color: #555555;
+    width: 95%;
+    max-width: 750px;
+    padding: 1rem 1.5rem;
+    margin: auto;
+}
+
+.parkBox{
+	display: flex;
+    background-color: #eeeeee;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.parkBoxInfo{
+
+	display: flex;
+    flex-direction: row;
+
+}
+
+.parkBoxCourse{
+
+	display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.
