@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import certifi
 import jwt
 import datetime
 import hashlib
@@ -12,12 +13,21 @@ app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 
 SECRET_KEY = 'SPARTA'
 
-client = MongoClient('mongodb+srv://Sparta:SpArTae8737be698@cluster0.licyu.mongodb.net/?retryWrites=true&w=majority')
+
+ca = certifi.where()
+client = MongoClient('mongodb+srv://Sparta:SpArTae8737be698@cluster0.licyu.mongodb.net/?retryWrites=true&w=majority',tlsCAFile=ca)
 db = client.parkReview
 
 @app.route('/')
 def main():
     return render_template("mainpage.html")
+
+@app.route('/parkpage')
+def park():
+    user = db.Users.find_one({'userId': 0})
+    parks = db.Parks.find_one({'parkId': 0})
+    currList = db.Reviews.find_one({'reviewId':0})
+    return render_template("park.html", user=user, parks=parks, currList=currList)
 
 @app.route('/header')
 def header():
@@ -26,11 +36,6 @@ def header():
 @app.route('/footer')
 def footer():
     return render_template('footer.html')
-
-@app.route('/park/<parkId>')
-def park(parkId):
-    return render_template("park.html", parkId=parkId)
-
 
 #################################
 ##  HTML을 주는 부분             ##
@@ -141,7 +146,7 @@ def user(username):
 @app.route('/mypage')
 def mypage():
     user=db.Users.find_one({'userId': 0})
-    parks=list(db.Parks.find({}))
+    parks=list(db.Parks.find({'parkId': 0}))
     currList=parks
 
     return render_template("mypage.html", user=user, parks=parks, currList=currList, parkId="all")
@@ -169,7 +174,6 @@ def getMyReviews(parkId):
 
     return render_template("mypage.html", user=user, parks=parks, currList=reviews, parkId=parkId)
 
-
 @app.route('/api/checkLogin')
 def checkLogin():
     token_receive = request.cookies.get('mytoken')
@@ -184,22 +188,6 @@ def checkLogin():
         return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
 
 
-
-@app.route('/api/getParkInfo/<parkId>')
-def getParks(parkId):
-    currList = db.Parks.find_one({'parkId':parkId})
-    return jsonify({'Parks': currList})
-
-
-@app.route('/api/getMyInfo/<userId>')
-def getMyInfo(userId):
-    currList = db.Users.find_one({'userId':userId})
-    return jsonify({'user': currList})
-
-@app.route('/api/getMyReviews/<reviewId>')
-def getReviews(reviewId):
-    currList = db.Reviews.find_one({'reviewId':reviewId})
-    return jsonify({'Reviews': currList})
 
 @app.route('/api/postMyReviews/<reviewId>', methods=['POST'])
 def postReview(reviewId):
