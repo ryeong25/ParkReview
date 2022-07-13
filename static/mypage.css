@@ -23,7 +23,7 @@
     text-align: center;
     background-color: transparent;
     border-color: #48c774;
-    color: #48c774;
+    color: #686f6b;
     border-width: 2px;
     border-bottom-style: dotted;
 }
@@ -38,6 +38,11 @@
 
 .role-button:hover {
     background: #48c774;
+    color: #fff;
+}
+
+.role-button.active {
+    background: #b2ffcd;
     color: #fff;
 }
 

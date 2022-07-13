@@ -90,14 +90,14 @@
             </div>
             <div class="myPark right">
                 <div class="selectCard">
-                    <div class="card text-center role-button">
+                    <div class="card text-center role-button {% if parkId == 'all' %}{{ 'active' }}{% endif %}">
                         <div class="card-body">
                             <a href="/mypage/myParks/all">
                                 전체 공원
                             </a>
                         </div>
                     </div>
-                    <div class="card text-center role-button">
+                    <div class="card text-center role-button {% if parkId == 'finished' %}{{ 'active' }}{% endif %}">
                         <div class="card-body">
                             <a href="/mypage/myParks/finished">
                                 🏁 완주 공원
@@ -109,10 +109,10 @@
                             </a>
                         </div>
                     </div>
-                    <div class="card text-center role-button">
+                    <div class="card text-center role-button {% if parkId == 'favorite' %}{{ 'active' }}{% endif %}">
                         <div class="card-body">
                             <a href="/mypage/myParks/favorite">
-                                ❤ 즐겨찾는 공원
+                                💚 즐겨찾는 공원
                             </a>
                         </div>
                     </div>
@@ -131,7 +131,7 @@
                                             <div class="card-body">
                                                 <div>
                                                     <h5 class="card-title">
-                                                        ❤
+                                                        💚
                                                         <br>
                                                         {{ park.parkName }}
                                                     </h5>
@@ -184,7 +184,7 @@
                                         {% for check in user.parkCheck %}
                                             {% if check.parkId == park.parkId %}
                                                 {% if check.favorite == 1 %}
-                                                    ❤
+                                                💚
                                                 {% endif %}
                                                 {% if check.finished == 1 %}
                                                     🏁
