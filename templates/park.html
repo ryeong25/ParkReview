@@ -2,67 +2,32 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Park Review | 공원 정보</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>F반4조 <제목></title>
 
-    <!-- 제이쿼리 -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <!-- 부트스트랩 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-    </script>
+    <!--부트스트랩 관련 CDN Link    -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+          crossorigin="anonymous">
+    <!--JQuery 관련 CDN Link    -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <!--  css_style -->
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+    <link href="../static/CSS/mainpage.css" rel="stylesheet">
+    <link href="../static/parkstyle.css" rel="stylesheet">
+
+    <!-- Bulma CSS 링크 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- Font Awesome CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='mystyle.css') }}" rel="stylesheet">
 
     <style>
-
-        .mainContainor{
-            padding-top: 20px;
-
-            flex: 80%;
-            display: block;
-            flex-direction: column;
-            justify-content: center;
-
-            gap: 10px;
-        }
-
-        .Box{
-            background-color: aquamarine;
-            width: 95%;
-            max-width: 800px;
-
-            margin: 10px auto 10px;
-            padding: 20px 2% 20px;
-
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .parkInfo{
-            justify-content: center;
-        }
-
-        .parkImage{
-            background-color: aqua;
-        }
-
-        .parkBtn{
-
-            background-color: aqua;
-        }
-
-        .reviewRrite{
-            display: flex;
-            flex-direction: row;
-            background-color: aqua;
-        }
-        .dropSelect{
-            display: flex;
-            flex-direction: row;
-            background-color: aqua;
-        }
     </style>
 
     <script>
@@ -112,142 +77,116 @@
 
 </head>
 <body>
-    <div class="wrap">
-        <header></header>
-        <section>
-            <div class="mainContainor">
+<div class="wrap">
+    <div class="parkBox columns">
+        <div class="parkBoxInfo">
+            <div class="parkBIparkName column">{{ parks.parkName }}</div>
+            <div class="parkBIdfficulty column">{{ parks.runningTime }}</div>
+        </div>
+        <div class="parkBoxImage column"></div>
+        <div>
+            <div class="parkBoxDesc column">{{ parks.parkDesc }}</div>
+            <div class="parkBoxLocation column">{{ parks.parkLocation }}</div>
+        </div>
+        
+        <div class="parkBoxCourse">
+            <div class="courseBox"></div>
+            <div class="courseBox">{{ parks.course[0] }}</div>
+            <div class="courseBox">{{ parks.course[1] }}</div>
+        </div>
+        <div class="parkBoxModalBtn">
+            <button onclick='$("#modal-post").addClass("is-active")'>리뷰하기</button>
+        </div>
+    </div>
+    <div class="review Box">
+        <div>
+            {{ re }}
+        </div>
+    </div>
 
-                <div class="park Box">
-                    <div class="parkInfo">
-                        <p>
-                            <span>{{ parks.parkName }}</span>
-                            <span>날씨 가져오기</span>
-                            <span>{{ parks.runningTime }}</span>
-                        </p>
+    <div class="modal" id="modal-post">
+        <div class="modal-background" onclick='$("#modal-post").removeClass("is-active")'></div>
+        <div class="modal-content">
+            <div class="box" id="modalBox">
+                {{ parkName }} | {{ course }}
+                <div id="modalBoxEntry">
+                    <div class="dropSelect" id="modalBEdrop">
+                        <select class="form-select" id="mm">
+                            <option selected>MM월</option>
+                            <option value=01>1월</option>
+                            <option value=02>2월</option>
+                            <option value=03>3월</option>
+                            <option value=04>4월</option>
+                            <option value=05>5월</option>
+                            <option value=06>6월</option>
+                            <option value=07>7월</option>
+                            <option value=08>8월</option>
+                            <option value=09>9월</option>
+                            <option value=10>10월</option>
+                            <option value=11>11월</option>
+                            <option value=12>12월</option>
+                        </select>
+                        <select class="form-select" id="dd">
+                            <option selected>DD일</option>
+                            <option value=01>1일</option>
+                            <option value=02>2일</option>
+                            <option value=03>3일</option>
+                            <option value=04>4일</option>
+                            <option value=05>5일</option>
+                            <option value=06>6일</option>
+                            <option value=07>7일</option>
+                            <option value=08>8일</option>
+                            <option value=09>9일</option>
+                            <option value=10>10일</option>
+                            <option value=11>11일</option>
+                            <option value=12>12일</option>
+                            <option value=13>13일</option>
+                            <option value=14>14일</option>
+                            <option value=15>15일</option>
+                            <option value=16>16일</option>
+                            <option value=17>17일</option>
+                            <option value=18>18일</option>
+                            <option value=19>19일</option>
+                            <option value=20>20일</option>
+                            <option value=21>21일</option>
+                            <option value=22>22일</option>
+                            <option value=23>23일</option>
+                            <option value=24>24일</option>
+                            <option value=25>25일</option>
+                            <option value=26>26일</option>
+                            <option value=27>27일</option>
+                            <option value=28>28일</option>
+                            <option value=29>29일</option>
+                            <option value=30>30일</option>
+                            <option value=31>31일</option>
+
+                        </select>
+                        <select class="form-select" id="rate">
+                            <option selected>날씨</option>
+                            <option value=☀>{{ "☀" }}</option>
+                            <option value=🌤>{{ "🌤" }}</option>
+                            <option value=☁>{{ "☁" }}</option>
+                            <option value=☔>{{ "☔" }}</option>
+                            <option value=❄>{{ "❄" }}</option>
+                        </select>
+                        <select class="form-select" id="rate">
+                            <option selected>평점</option>
+                            <option value=1>{{ "⭐" * 1 }}</option>
+                            <option value=2>{{ "⭐" * 2 }}</option>
+                            <option value=3>{{ "⭐" * 3 }}</option>
+                            <option value=4>{{ "⭐" * 4 }}</option>
+                            <option value=5>{{ "⭐" * 5 }}</option>
+                        </select>
                     </div>
-                    <div class="parkImage Box">
-                        <img src="{% get_static_prefix %}/parkImage/{{parkId}}.png">
-                        <div class="chooseCourse"></div>
-                    </div>
-                    <div class="parkBtn Box ">
-                        <button></button>
-                    </div>
-
-                    <div class="reviewRrite Box">
-
-
-
-                        <div class="dropSelect">
-                            <select class="form-select" id="mm">
-                                <option selected>MM월</option>
-                                <option value=01>1월</option>
-                                <option value=02>2월</option>
-                                <option value=03>3월</option>
-                                <option value=04>4월</option>
-                                <option value=05>5월</option>
-                                <option value=06>6월</option>
-                                <option value=07>7월</option>
-                                <option value=08>8월</option>
-                                <option value=09>9월</option>
-                                <option value=10>10월</option>
-                                <option value=11>11월</option>
-                                <option value=12>12월</option>
-                            </select>
-                            <select class="form-select" id="dd">
-                                <option selected>DD일</option>
-                                <option value=01>1일</option>
-                                <option value=02>2일</option>
-                                <option value=03>3일</option>
-                                <option value=04>4일</option>
-                                <option value=05>5일</option>
-                                <option value=06>6일</option>
-                                <option value=07>7일</option>
-                                <option value=08>8일</option>
-                                <option value=09>9일</option>
-                                <option value=10>10일</option>
-                                <option value=11>11일</option>
-                                <option value=12>12일</option>
-                                <option value=13>13일</option>
-                                <option value=14>14일</option>
-                                <option value=15>15일</option>
-                                <option value=16>16일</option>
-                                <option value=17>17일</option>
-                                <option value=18>18일</option>
-                                <option value=19>19일</option>
-                                <option value=20>20일</option>
-                                <option value=21>21일</option>
-                                <option value=22>22일</option>
-                                <option value=23>23일</option>
-                                <option value=24>24일</option>
-                                <option value=25>25일</option>
-                                <option value=26>26일</option>
-                                <option value=27>27일</option>
-                                <option value=28>28일</option>
-                                <option value=29>29일</option>
-                                <option value=30>30일</option>
-                                <option value=31>31일</option>
-
-                            </select>
-                            <select class="form-select" id="rate">
-                                <option selected>오늘의 평점</option>
-                                <option value=1>{{ "⭐" * 1 }}</option>
-                                <option value=2>{{ "⭐" * 2 }}</option>
-                                <option value=3>{{ "⭐" * 3 }}</option>
-                                <option value=4>{{ "⭐" * 4 }}</option>
-                                <option value=5>{{ "⭐" * 5 }}</option>
-                            </select>
-                            <div>
-                                <h3>{{parks.parkName}}</h3>
-                            </div>
-                        </div>
-                        <button type="button" class="btn-close" disabled aria-label="Close"></button>
-                    </div>
-
-                </div>
-
-                <div class="review Box">
-                    {% if 'reviewId' in currList %}
-                    <div class="reviews row">
-                        {% for review in currList['reviews'] %}
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    {{ review.comment }}
-                                </h5>
-                                <p class="card-text">
-                                    {% for park in parks %}
-                                        {{}}
-                                        {% if park.parkId == review.parkId %}
-                                            {{ park.parkName }}
-                                        {% endif %}
-                                    {% endfor %}
-                                    |
-                                    {{ review.weather }}
-                                    |
-                                    rate: {{review.rate}}
-                                    {% if review.rate == 5 %}
-                                        {{ "⭐" * 5 }}
-                                    {% elif review.rate == 4 %}
-                                        {{ "⭐" * 4 }}
-                                    {% elif review.rate == 3 %}
-                                        {{ "⭐" * 3 }}
-                                    {% elif review.rate == 2 %}
-                                        {{ "⭐" * 2 }}
-                                    {% elif review.rate == 1 %}
-                                        {{ "⭐" * 1 }}
-                                    {% else %}
-                                        😡
-                                    {% endif %}
-                                </p>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
+                    <div id="modalBEcomment"></div>
                 </div>
             </div>
-        </section>
-        <footer></footer>
+
+        </div>
+
     </div>
+</div>
+
+
 </body>
 </html>
