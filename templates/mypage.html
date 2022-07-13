@@ -61,7 +61,7 @@
             </div>
         </header>
         <section class="mypage-contents container">
-            <div>
+            <div class="left">
                 <aside>
                     <ul>
                         <li>안녕하세요.
@@ -88,7 +88,7 @@
                     </ul>
                 </aside>
             </div>
-            <div class="myPark">
+            <div class="myPark right">
                 <div class="selectCard">
                     <div class="card text-center role-button">
                         <div class="card-body">
@@ -208,11 +208,13 @@
                 </div>
                 {% endif %}
                 <!-- 리뷰 -->
+                
                 {% if 'reviewId' in currList %}
                 <div class="reviews row">
                     <!-- 리뷰 전체 -->
                     {% if parkId == 'all' %}
                         <h1>리뷰 {{ currList['reviews'] | length }}개</h1>
+                        <!-- {{ currList['reviews'] }} -->
                         {% for review in currList['reviews'] %}
                             {% for park in parks %}
                                 {% if park.parkId == review.parkId %}

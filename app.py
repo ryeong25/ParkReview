@@ -166,12 +166,12 @@ def getMyParks(parkId):
 @app.route('/mypage/myReviews/<parkId>')
 def getMyReviews(parkId):
     user=db.Users.find_one({'userId': 0})
-    parks=db.Parks.find({})
+    parks=list(db.Parks.find({}))
 
     userReviewId=user['reviewId']
-    currList=db.Reviews.find_one({'reviewId': userReviewId})
+    reviews=db.Reviews.find_one({'reviewId': userReviewId})
 
-    return render_template("mypage.html", user=user, parks=parks, currList=currList, parkId=parkId)
+    return render_template("mypage.html", user=user, parks=parks, currList=reviews, parkId=parkId)
 
 
 @app.route('/api/checkLogin')
