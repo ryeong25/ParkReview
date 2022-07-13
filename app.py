@@ -3,7 +3,7 @@ import certifi
 import jwt
 import datetime
 import hashlib
-from flask import Flask, render_template, jsonify, request, redirect, url_for , json
+from flask import Flask, render_template, jsonify, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from datetime import timedelta
 
@@ -23,11 +23,7 @@ def main():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-<<<<<<< HEAD
         user = db.Users.find_one({"email": payload["email"]})
-=======
-        user = db.Users.find_one({"email": payload["userId"]})
->>>>>>> 43f5da8626935f5c945e59a9e0db29b5d1da41bf
         return render_template("mainpage.html", user=user)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
@@ -38,11 +34,13 @@ def main():
 @app.route('/parkpage/<parkId>')
 def park(parkId):
     token_receive = request.cookies.get('mytoken')
-    parks = db.Parks.find_one({"parkId": parkId })
+
+    Id= int(parkId)
+    parks = db.Parks.find_one({'parkId': Id})
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user = db.Users.find_one({'userId': payload['userId']}, {"_id": False})
-        currList = db.Reviews.find_one({'reviewId': payload['userId']})
+        user = db.Users.find_one({'userId': userId}, {"_id": False})
+        currList = db.Reviews.find_one({'reviewId': userId})
         return render_template("park.html", user=user, parks=parks, currList=currList)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("main"))
@@ -108,21 +106,16 @@ def api_login():
     pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
 
     result = db.Users.find_one({'email': email_receive, 'password': pw_hash})
+
     # 찾으면 JWT 토큰을 만들어 발급합니다.
     if result is not None:
         # JWT 토큰에는, payloaduserId와 시크릿키가 필요합니다.
         # 시크릿키가 있어야 토큰을 디코딩(=풀기) 해서 payload 값을 볼 수 있습니다.
         # 아래에선 id와 exp를 담았습니다. 즉, JWT 토큰을 풀면 유저ID 값을 알 수 있습니다.
         # exp에는 만료시간을 넣어줍니다. 만료시간이 지나면, 시크릿키로 토큰을 풀 때 만료되었다고 에러가 납니다.
-        userId = result['userId']
         payload = {
-<<<<<<< HEAD
             'email': email_receive,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60)
-=======
-            'userId': userId,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60 * 60 *1)
->>>>>>> 43f5da8626935f5c945e59a9e0db29b5d1da41bf
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         return jsonify({'result': 'success', 'token': token})
@@ -162,7 +155,7 @@ def mypage():
     parks=list(db.Parks.find({'parkId': 0}))
     currList=parks
 
-    return redirect('/mypage/myParks/all')
+    return render_template("mypage.html", user=user, parks=parks, currList=currList, parkId="all")
 
 # 나의 공원
 @app.route('/mypage/myParks/<parkId>')
@@ -179,10 +172,11 @@ def getMyParks(parkId):
 @app.route('/mypage/myReviews/<parkId>')
 def getMyReviews(parkId):
     user=db.Users.find_one({'userId': 0})
-    parks=list(db.Parks.find({}))
+    parks=db.Parks.find({})
 
     userReviewId=user['reviewId']
     reviews=db.Reviews.find_one({'reviewId': userReviewId})
+    print(reviews)
 
     return render_template("mypage.html", user=user, parks=parks, currList=reviews, parkId=parkId)
 
