@@ -15,18 +15,9 @@ SECRET_KEY = 'SPARTA'
 client = MongoClient('mongodb+srv://Sparta:SpArTae8737be698@cluster0.licyu.mongodb.net/?retryWrites=true&w=majority')
 db = client.parkReview
 
-@app.route('/detail')
-def detail():
-    return render_template("index.html")
-
-
 @app.route('/')
 def main():
     return render_template("mainpage.html")
-
-@app.route('/park/<parkId>')
-def park(parkId):
-    return render_template("park.html", parkId=parkId)
 
 @app.route('/header')
 def header():
@@ -35,6 +26,10 @@ def header():
 @app.route('/footer')
 def footer():
     return render_template('footer.html')
+
+@app.route('/park/<parkId>')
+def park(parkId):
+    return render_template("park.html", parkId=parkId)
 
 
 #################################
