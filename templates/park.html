@@ -29,9 +29,9 @@
 
 
     <script>
+        let courseNum
         $(document).ready(function () {
-            $("#header").load("./header");  // 원하는 파일 경로를 삽입하면 된다
-            $("#footer").load("./footer");  // 추가 인클루드를 원할 경우 이런식으로 추가
+
         });
 
         function save_review() {
@@ -53,7 +53,7 @@
 
 </head>
 <body>
-<section id="header"></section>
+{% include('header.html') %}
 <div class="wrap">
     <div class="Box columns is-centered card">
         <div class="parkBoxInfo notification">
@@ -118,7 +118,7 @@
         <div class="modal-background" onclick='$("#modal-post").removeClass("is-active")'></div>
         <div class="modal-content">
             <div class="box" id="modalBox">
-                {{ parks.parkName }} | {{ parks.course[] }}
+                {{ parks.parkName }} | {{ parks.course[courseNum] }}
                 <div id="modalBoxEntry">
                     <div class="dropSelect" id="modalBEdrop">
                         <select class="form-select" id="mm">
@@ -194,7 +194,7 @@
         </div>
     </div>
 </div>
-<section id="footer"></section>
+{% include('footer.html') %}
 
 </body>
 </html>

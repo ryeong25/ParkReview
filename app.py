@@ -22,10 +22,12 @@ db = client.parkReview
 def main():
     return render_template("mainpage.html")
 
-@app.route('/parkpage')
-def park():
+@app.route('/parkpage/<parkId>')
+def park(parkId):
+
+    Id= int(parkId)
     user = db.Users.find_one({'userId': 0})
-    parks = db.Parks.find_one({'parkId': 0})
+    parks = db.Parks.find_one({'parkId': Id})
     currList = db.Reviews.find_one({'reviewId':0})
     return render_template("park.html", user=user, parks=parks, currList=currList)
 
