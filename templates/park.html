@@ -28,10 +28,10 @@
                 select
             </div>
             <div class="courseBox column card text-center btn">
-                {{ parks.course[0].courseName }}
+                {{ parks.course }}
             </div>
             <div class="courseBox column card text-center btn">
-                {{ parks.course[1].courseName }}
+                {{ parks.course }}
             </div>
         </div>
         <div class="parkBoxModalBtn">
@@ -73,7 +73,7 @@
         <div class="modal-background" onclick='$("#modal-post").removeClass("is-active")'></div>
         <div class="modal-content">
             <div class="box" id="modalBox">
-                {{ parks.parkName }} | {{ parks.course[courseNum] }}
+                {{ parks.parkName }} | {{ parks.course }}
                 <div id="modalBoxEntry">
                     <div class="dropSelect" id="modalBEdrop">
                         <select class="form-select" id="mm">
