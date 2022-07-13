@@ -151,7 +151,7 @@ def mypage():
     parks=list(db.Parks.find({'parkId': 0}))
     currList=parks
 
-    return render_template("mypage.html", user=user, parks=parks, currList=currList, parkId="all")
+    return redirect('/mypage/myParks/all')
 
 # 나의 공원
 @app.route('/mypage/myParks/<parkId>')
