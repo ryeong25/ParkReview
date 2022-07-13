@@ -40,7 +40,7 @@ def footer():
 #################################
 ##  HTML을 주는 부분             ##
 #################################
-@app.route('&')
+@app.route('/&')
 def start():
     token_receive = request.cookies.get('mytoken')
     try:
@@ -52,14 +52,14 @@ def start():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
-    @app.route('/login')
-    def login():
-        msg = request.args.get("msg")
-        return render_template('login.html', msg=msg)
+@app.route('/login')
+def login():
+    msg = request.args.get("msg")
+    return render_template('login.html', msg=msg)
 
-    @app.route('/register')
-    def register():
-        return render_template('register.html')
+@app.route('/register')
+def register():
+    return render_template('register.html')
 
 
 # [회원가입 API]
