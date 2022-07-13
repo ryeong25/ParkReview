@@ -2,7 +2,7 @@ from pymongo import MongoClient
 import jwt
 import datetime
 import hashlib
-from flask import Flask, render_template, jsonify, request, redirect, url_for
+from flask import Flask, render_template, jsonify, request, redirect, url_for , json
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 
@@ -17,6 +17,7 @@ db = client.parkReview
 
 @app.route('/')
 def main():
+    # all_parks = list(db.Parks.find({}, {'_id': False}))
     return render_template("mainpage.html")
 
 @app.route('/header')
