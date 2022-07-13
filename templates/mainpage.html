@@ -44,16 +44,16 @@
                             </figure>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">(해당공원날씨)</h5>
+                            <h5 class="card-title"><div id="weather"></div></h5>
                             <p class="title is-4">망원 한강공원</p>
                             <p class="subtitle is-6"> 입문자용 코스 </p>
                             <div class="content">
                                 합정역에서 출발하는 한강공원코스
+                                <br>
                                 <a href="#">#합정역</a> <a href="#">#쉬움</a> <a href="#">#산책</a>
-
                                 <br>
                             </div>
-                            <button href="#" class="button is-success is-light is-rounded ">달리러가기</button>
+                            <button onclick="window.location.href='/parkpage/'" class="button is-success is-light is-rounded ">달리러가기</button>
                         </div>
                     </div>
                 </div>
@@ -65,15 +65,17 @@
                             </figure>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">(해당공원날씨)</h5>
+                            <h5 class="card-title"></h5>
                             <p class="title is-4">여의도 한강공원</p>
                             <p class="subtitle is-6"> 적당한 코스 </p>
                             <div class="content">
                                 오리배를 탈 수 있는 한강공원코스
+                                <br>
                                 <a href="#">#여의도</a> <a href="#">#오리배</a> <a href="#">#밤섬구경</a>
                                 <br>
                             </div>
-                            <button href="#" class="button is-success is-light is-rounded ">달리러가기</button>
+                            <button href="#" class="button is-success is-ligzht is-rounded ">달리러가기</button>
+
                         </div>
                     </div>
                 </div>
@@ -85,11 +87,12 @@
                             </figure>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">(해당공원날씨)</h5>
+                            <h5 class="card-title"></h5>
                             <p class="title is-4">석촌호수공원</p>
                             <p class="subtitle is-6"> 고수용 코스 </p>
                             <div class="content">
                                 석촌호수부터 광나루야구장까지
+                                <br>
                                 <a href="#">#롯데월드구경</a> <a href="#">#봄에는벚꽃</a> <a href="#">#석촌호수</a>
                                 <br>
                             </div>
@@ -107,8 +110,36 @@
     <script>
         $(document).ready(function () {
             $("#header").load("./header");  // 원하는 파일 경로를 삽입하면 된다
-            $("#footer").load("./footer");  // 추가 인클루드를 원할 경우 이런식으로 추가
+            $("#footer").load("./footer");// 추가 인클루드를 원할 경우 이런식으로 추가#}
         });
+
+        // API키
+        const API_KEY = 'b23c8020d88635be966aa7e1d3803114'
+
+        // 위도, 경도
+        const latitude = 37.55085;
+        const longitude = 126.901;
+
+        getWeather(latitude, longitude);
+
+        // 함수실행
+        function getWeather(lat, lon) {
+            fetch(
+                `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+            )
+                .then((response) => {
+                    return response.json();
+                })
+                .then((json) => {
+                    const temparature = json.main.temp;
+                    const icon = json.weather[0].icon;
+
+                    weather.innerHTML =
+                        `
+                <img src="http://openweathermap.org/img/wn/${icon}@2x.png"/>
+                <strong>${temparature.toFixed(1)}℃</strong>`;
+                });
+        }
     </script>
 
 </body>

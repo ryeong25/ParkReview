@@ -1,0 +1,44 @@
+
+.wrap {
+    width: 95%;
+    max-width: 750px;
+    padding: 1rem 1.5rem;
+    margin: auto;
+}
+
+.Box{
+
+    margin: 10px;
+	display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.parkBoxInfo{
+	display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+.parkBoxCourse{
+
+	display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.form-select {
+    display: block;
+}
+
+.btn:hover {
+    background: #48c774;
+    color: #fff;
+}
+
+.parkBoxModalBtn{
+}
