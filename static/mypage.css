@@ -110,6 +110,14 @@
     justify-content: center;
     align-items: center;
 }
+.card-title {
+    font-size: 20px;
+    font-weight: 700;
+}
+.card-text-sm {
+    font-size: 12px;
+    margin-bottom: 1rem;
+}
 
 @media (max-width: 900px) {
     .mypage-contents {

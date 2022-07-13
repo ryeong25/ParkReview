@@ -133,11 +133,14 @@
                                                     <h5 class="card-title">
                                                         💚
                                                         <br>
+                                                        <br>
                                                         {{ park.parkName }}
                                                     </h5>
                                                     <p class="card-text">
                                                         {{ park.parkLocation }}
-                                                        <hr>
+                                                    </p>
+                                                    <br>
+                                                    <p class="card-text-sm">
                                                         {{ park.parkDesc }}
                                                     </p>
                                                 </div>
@@ -159,11 +162,14 @@
                                                     <h5 class="card-title">
                                                         🏁
                                                         <br>
+                                                        <br>
                                                         {{ park.parkName }}
                                                     </h5>
                                                     <p class="card-text">
                                                         {{ park.parkLocation }}
-                                                        <hr>
+                                                    </p>
+                                                    <br>
+                                                    <p class="card-text-sm">
                                                         {{ park.parkDesc }}
                                                     </p>
                                                 </div>
@@ -187,8 +193,9 @@
                                                 💚
                                                 {% endif %}
                                                 {% if check.finished == 1 %}
-                                                    🏁
+                                                🏁
                                                 {% endif %}
+                                                <br>
                                             {% endif %}
                                         {% endfor %}
                                         <br>
@@ -196,9 +203,11 @@
                                     </h5>
                                     <p class="card-text">
                                         {{ park.parkLocation }}
-                                        <hr>
-                                        {{ park.parkDesc }}
                                     </p>
+                                    <br>
+                                    <p class="card-text-sm">
+                                        {{ park.parkDesc }}
+                                    <p>
                                 </div>
                                 <a href="/park/{{ park.parkId }}" class="btn btn-primary">공원 정보</a>
                             </div>
