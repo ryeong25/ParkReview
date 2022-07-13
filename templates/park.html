@@ -35,30 +35,16 @@
             parkId=0
             $("#header").load("./header");
             $("#footer").load("./footer");
-            get_park()
-            get_review()
+            get_parks_list()
+            get_reviews()
         })
 
-        function get_park() {
-            $.ajax({
-                type: "GET",
-                url: "/api/getParkInfo/${parkId}",
-                data: {},
-                success: function (response) {
-                    console.log(response)
-                }
-            })
+        function get_parks_list(parkId) {
+            location.href=`/api/getParkInfo/${parkId}`
         }
 
-        function get_review() {
-            $.ajax({
-                type: "GET",
-                url: "/api/getMyReviews/${userId}",
-                data: {},
-                success: function (response) {
-                    console.log(response)
-                }
-            })
+        function get_reviews(parkId) {
+            location.href=`/api/getMyReviews/${parkId}`
         }
 
         function save_review() {
@@ -83,8 +69,8 @@
 <div class="wrap">
     <div class="parkBox columns">
         <div class="parkBoxInfo">
-            <div class="parkBIparkName column">{{ parks.parkName }}</div>
-            <div class="parkBIdfficulty column">{{ parks.runningTime }}</div>
+            <div class="parkBIparkName column is-one-fifths">{{ parks.parkName }}</div>
+            <div class="parkBIdfficulty column is-one-fifths">{{ parks.runningTime }}</div>
         </div>
         <div class="parkBoxImage column"></div>
         <div>
@@ -102,8 +88,35 @@
         </div>
     </div>
     <div class="review Box">
-        <div>
-            {{ re }}
+        {% for review in currList['reviews'] %}
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {{ review.comment }}
+                    </h5>
+                    <p class="card-text">
+                        {{ park.parkName }}
+                        |
+                        {{ review.weather }}
+                        |
+                        rate: {{ review.rate }}
+                        {% if review.rate == 5 %}
+                            {{ "⭐" * 5 }}
+                        {% elif review.rate == 4 %}
+                            {{ "⭐" * 4 }}
+                        {% elif review.rate == 3 %}
+                            {{ "⭐" * 3 }}
+                        {% elif review.rate == 2 %}
+                            {{ "⭐" * 2 }}
+                        {% elif review.rate == 1 %}
+                            {{ "⭐" * 1 }}
+                        {% else %}
+                            😡
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
         </div>
     </div>
     <div class="modal" id="modal-post">
