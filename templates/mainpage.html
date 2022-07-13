@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <!-- Font Awesome CSS -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    {#style css 파일 불러오기 (bulma css보다 아래 위치)#}
+<!--    {#style css 파일 불러오기 (bulma css보다 아래 위치)#}-->
     <link href="{{ url_for('static', filename='mainstyle.css') }}" rel="stylesheet">
 
 </head>
@@ -50,8 +50,7 @@
                             <div class="content">
                                 합정역에서 출발하는 한강공원코스
                                 <br>
-                                <a href="#">#합정역</a> <a href="#">#쉬움</a> <a href="#">#산책</a>
-                                <br>
+                                <div class="sub-content"><a>#합정역</a> <a>#쉬움</a> <a>#산책</a></div>
                             </div>
                             <button onclick="window.location.href='/parkpage/'" class="button is-success is-light is-rounded ">달리러가기</button>
                         </div>
@@ -71,10 +70,9 @@
                             <div class="content">
                                 오리배를 탈 수 있는 한강공원코스
                                 <br>
-                                <a href="#">#여의도</a> <a href="#">#오리배</a> <a href="#">#밤섬구경</a>
-                                <br>
+                                <div class="sub-content"><a>#여의도</a> <a>#오리배</a> <a>#밤섬구경</a></div>
                             </div>
-                            <button href="#" class="button is-success is-ligzht is-rounded ">달리러가기</button>
+                            <button onclick="window.location.href='/parkpage/'" class="button is-success is-light is-rounded ">달리러가기</button>
 
                         </div>
                     </div>
@@ -93,10 +91,9 @@
                             <div class="content">
                                 석촌호수부터 광나루야구장까지
                                 <br>
-                                <a href="#">#롯데월드구경</a> <a href="#">#봄에는벚꽃</a> <a href="#">#석촌호수</a>
-                                <br>
+                                <div class="sub-content"><a>#롯데월드구경</a> <a >#봄에는벚꽃</a> <a >#석촌호수</a></div>
                             </div>
-                            <button href="#" class="button is-success is-light is-rounded ">달리러가기</button>
+                            <button onclick="window.location.href='/parkpage/'" class="button is-success is-light is-rounded ">달리러가기</button>
                         </div>
                     </div>
                 </div>
@@ -108,9 +105,9 @@
 
     <!--header/footer 삽입-->
 
-{#    {% for parks in all_parks %}#}
-{#        <span onclick=someFunction({{ item|safe }});>{{ item }}</span>#}
-{#    {% endfor %}#}
+<!--{#    {% for parks in all_parks %}#}-->
+<!--{#        <span onclick=someFunction({{ item|safe }});>{{ item }}</span>#}-->
+<!--{#    {% endfor %}#}-->
 
     <script>
         $(document).ready(function () {
@@ -122,8 +119,8 @@
         const API_KEY = 'b23c8020d88635be966aa7e1d3803114'
 
         // 위도, 경도
-        {#const latitude =  ;#}
-        {#const longitude = ;#}
+        // {#const latitude =  ;#}
+        // {#const longitude = ;#}
 
         getWeather(37.55085, 126.90168 ,'weather0');
         getWeather(37.53104, 126.92889 ,'weather1');
@@ -155,10 +152,10 @@
                             <strong>${temparature.toFixed(1)}℃</strong>`;
                     }
 
-                {#    weather.innerHTML =#}
-                {#        `#}
-                {#<img src="http://openweathermap.org/img/wn/${icon}@2x.png"/>#}
-                {#<strong>${temparature.toFixed(1)}℃</strong>`;#}
+                // {#    weather.innerHTML =#}
+                // {#        `#}
+                // {#<img src="http://openweathermap.org/img/wn/${icon}@2x.png"/>#}
+                // {#<strong>${temparature.toFixed(1)}℃</strong>`;#}
                 });
         }
     </script>
