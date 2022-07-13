@@ -20,16 +20,31 @@ db = client.parkReview
 
 @app.route('/')
 def main():
-    return render_template("mainpage.html")
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user = db.Users.find_one({"email": payload["id"]})
+        return render_template("mainpage.html", user=user)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
 
 @app.route('/parkpage/<parkId>')
 def park(parkId):
+    token_receive = request.cookies.get('mytoken')
 
     Id= int(parkId)
-    user = db.Users.find_one({'userId': 0})
     parks = db.Parks.find_one({'parkId': Id})
-    currList = db.Reviews.find_one({'reviewId':0})
-    return render_template("park.html", user=user, parks=parks, currList=currList)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user = db.Users.find_one({'userId': userId}, {"_id": False})
+        currList = db.Reviews.find_one({'reviewId': userId})
+        return render_template("park.html", user=user, parks=parks, currList=currList)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
 
 @app.route('/header')
 def header():
@@ -47,7 +62,7 @@ def start():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.user.find_one({"userId": payload['userId']})
+        user_info = db.Users.find_one({"userId": payload['userId']})
         return render_template('index.html', nickname=user_info["nick"])
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
@@ -59,41 +74,38 @@ def login():
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
 
-@app.route('/register')
-def register():
-    return render_template('register.html')
-
 
 # [회원가입 API]
 # id, pw, nickname, email을 받아서, mongoDB에 저장합니다.
 # 저장하기 전에, pw를 sha256 방법(=단방향 암호화. 풀어볼 수 없음)으로 암호화해서 저장합니다.
-@app.route('/api/register', methods=['POST'])
+@app.route('/api/sign_up/save', methods=['POST'])
 def api_register():
-    id_receive = request.form['id_give']
     email_receive = request.form['email_give']
-    nickname_receive = request.form['nickname_give']
-    pw_receive = request.form['pw_give']
-
+    userName_receive = request.form['userName_give']
+    pw_receive = request.form['password_give']
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
 
-    db.user.insert_one(
-        {'userId': id_receive,
-         'email': email_receive,
-         'userName': nickname_receive,
-         'password': pw_hash })
+    userIdNum = db.Users.count_documents({})
 
+    doc = {'userId': userIdNum,
+           'email': email_receive,
+           'userName': userName_receive,
+           'password': pw_hash,
+           'parkCheck':[]}
+
+    db.Users.insert_one(doc)
     return jsonify({'result': 'success'})
 
 # [로그인 API]
 # id, pw를 받아서 맞춰보고, 토큰을 만들어 발급합니다.
-@app.route('/api/login', methods=['POST'])
+@app.route('/api/sign_in', methods=['POST'])
 def api_login():
-    id_receive = request.form['id_give']
-    pw_receive = request.form['pw_give']
+    email_receive = request.form['email_give']
+    password_receive = request.form['password_give']
 
-    pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
+    pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
 
-    result = db.user.find_one({'': id_receive, 'password': pw_hash})
+    result = db.Users.find_one({'email': email_receive, 'password': pw_hash})
 
     # 찾으면 JWT 토큰을 만들어 발급합니다.
     if result is not None:
@@ -122,27 +134,19 @@ def api_valid():
         # token을 시크릿키로 디코딩합니다. 우리가 로그인 시 넣은 그 payload와 같은 것이 나옵니다.
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
-        userinfo = db.user.find_one({'userId': payload['userId']}, {'_id': 0})
-        return jsonify({'result': 'success', 'userName': userinfo['nick']})
+        userinfo = db.Users.find_one({'userId': payload['userId']}, {'_id': 0})
+        return jsonify({'result': 'success', 'email': userinfo['email']})
     except jwt.ExpiredSignatureError:
         return jsonify({'result': 'fail', 'msg': '로그인 시간이 만료되었습니다.'})
     except jwt.exceptions.DecodeError:
         return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
 
+@app.route('/api/sign_up/check_dup', methods=['POST'])
+def check_dup():
+    email_receive = request.form['email_give']
+    exists = bool(db.Users.find_one({"email": email_receive}))
+    return jsonify({'result': 'success', 'exists': exists})
 
-
-@app.route('/user/userId')
-def user(username):
-    # 각 사용자의 프로필과 글을 모아볼 수 있는 공간
-    token_receive = request.cookies.get('mytoken')
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        status = (username == payload["id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
-
-        user_info = db.users.find_one({"username": username}, {"_id": False})
-        return render_template('user.html', user_info=user_info, status=status)
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
 
 # 마이페이지
 @app.route('/mypage')
@@ -182,7 +186,7 @@ def checkLogin():
 
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        userinfo = db.user.find_one({'id': payload['id']}, {'_id': 0})
+        userinfo = db.Users.find_one({'id': payload['id']}, {'_id': 0})
         return jsonify({'result': 'success', 'nickname': userinfo['nick']})
     except jwt.ExpiredSignatureError:
         return jsonify({'result': 'fail', 'msg': '로그인 시간이 만료되었습니다.'})
