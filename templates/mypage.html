@@ -61,7 +61,7 @@
             </div>
         </header>
         <section class="mypage-contents container">
-            <div>
+            <div class="left">
                 <aside>
                     <ul>
                         <li>안녕하세요.
@@ -88,7 +88,7 @@
                     </ul>
                 </aside>
             </div>
-            <div class="myPark">
+            <div class="myPark right">
                 <div class="selectCard">
                     <div class="card text-center role-button">
                         <div class="card-body">
@@ -101,6 +101,11 @@
                         <div class="card-body">
                             <a href="/mypage/myParks/finished">
                                 🏁 완주 공원
+                                {% for chk in user.parkCheck %}
+                                    {% if chk['finished'] == 1 %}
+                                        <span style="font-size: 10px;">⭐</span>
+                                    {% endif %}
+                                {% endfor %}
                             </a>
                         </div>
                     </div>
@@ -203,10 +208,13 @@
                 </div>
                 {% endif %}
                 <!-- 리뷰 -->
+                
                 {% if 'reviewId' in currList %}
                 <div class="reviews row">
                     <!-- 리뷰 전체 -->
                     {% if parkId == 'all' %}
+                        <h1>리뷰 {{ currList['reviews'] | length }}개</h1>
+                        <!-- {{ currList['reviews'] }} -->
                         {% for review in currList['reviews'] %}
                             {% for park in parks %}
                                 {% if park.parkId == review.parkId %}
@@ -247,6 +255,7 @@
                         {% if review.parkId - pageId == 0 %}
                             {% for park in parks %}
                                 {% if park.parkId == review.parkId %}
+                                
                                 <div class="card text-center">
                                     <div class="card-body">
                                         <h5 class="card-title">
@@ -276,7 +285,6 @@
                                 </div>
                                 {% endif %}
                             {% endfor %}
-
                         {% endif %}
                     {% endfor %}
                 {% endif %}
