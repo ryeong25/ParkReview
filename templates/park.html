@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>F반4조 <제목></title>
+    <title>달려라</title>
 
     <!--부트스트랩 관련 CDN Link    -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -18,44 +18,31 @@
 
     <!--  css_style -->
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
-    <link href="../static/CSS/mainpage.css" rel="stylesheet">
     <link href="../static/parkstyle.css" rel="stylesheet">
+    <link href="../static/mainstyle.css" rel="stylesheet">
 
     <!-- Bulma CSS 링크 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <!-- Font Awesome CSS -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="{{ url_for('static', filename='mystyle.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='mainstyle.css') }}" rel="stylesheet">
 
-    <style>
-    </style>
 
     <script>
         $(document).ready(function () {
-            parkId=0
-            $("#header").load("./header");
-            $("#footer").load("./footer");
-            get_parks_list()
-            get_reviews()
-        })
-
-        function get_parks_list(parkId) {
-            location.href=`/api/getParkInfo/${parkId}`
-        }
-
-        function get_reviews(parkId) {
-            location.href=`/api/getMyReviews/${parkId}`
-        }
+            $("#header").load("./header");  // 원하는 파일 경로를 삽입하면 된다
+            $("#footer").load("./footer");  // 추가 인클루드를 원할 경우 이런식으로 추가
+        });
 
         function save_review() {
-            let date = $('#mm').val()+$('#dd').val()
+            let date = $('#mm').val()+ $('#dd').val()
             let rate = $('#rate').val()
             let comment = $('#comment').val()
 
             $.ajax({
                 type: 'POST',
                 url: '/mars',
-                data: {parkId_give: parkId, date_give: date, rate_give: rate, weather_give: weather, comment_give: comment},
+                data: {parkId_give: parkId, selectedCourse, date_give: date, rate_give: rate, weather_give: weather, comment_give: comment},
                 success: function (response) {
                     alert(response['msg'])
                     window.location.reload()
@@ -66,28 +53,37 @@
 
 </head>
 <body>
+<section id="header"></section>
 <div class="wrap">
-    <div class="parkBox columns">
-        <div class="parkBoxInfo">
-            <div class="parkBIparkName column is-one-fifths">{{ parks.parkName }}</div>
-            <div class="parkBIdfficulty column is-one-fifths">{{ parks.runningTime }}</div>
+    <div class="Box columns is-centered card">
+        <div class="parkBoxInfo notification">
+            <div class="notification is-success is-one-fifths">{{ parks.parkName }}</div>
+            <div class="notification is-info is-one-fifths">{{ parks.runningTime }}</div>
         </div>
-        <div class="parkBoxImage column"></div>
-        <div>
+        <div class="parkBoxImage column">
+
+        </div>
+        <div class="notification">
             <div class="parkBoxDesc column">{{ parks.parkDesc }}</div>
             <div class="parkBoxLocation column">{{ parks.parkLocation }}</div>
         </div>
         
-        <div class="parkBoxCourse">
-            <div class="courseBox"></div>
-            <div class="courseBox">{{ parks.course[0] }}</div>
-            <div class="courseBox">{{ parks.course[1] }}</div>
+        <div class="parkBoxCourse selectCard">
+            <div class="courseBox column card text-center btn">
+                select
+            </div>
+            <div class="courseBox column card text-center btn">
+                {{ parks.course[0].courseName }}
+            </div>
+            <div class="courseBox column card text-center btn">
+                {{ parks.course[1].courseName }}
+            </div>
         </div>
         <div class="parkBoxModalBtn">
-            <button onclick='$("#modal-post").addClass("is-active")'>리뷰하기</button>
+            <button class="column card btn is-right" onclick='$("#modal-post").addClass("is-active")'>리뷰하기</button>
         </div>
     </div>
-    <div class="review Box">
+    <div class="Box columns is-centered card">
         {% for review in currList['reviews'] %}
             <div class="card text-center">
                 <div class="card-body">
@@ -95,35 +91,34 @@
                         {{ review.comment }}
                     </h5>
                     <p class="card-text">
-                        {{ park.parkName }}
-                        |
-                        {{ review.weather }}
-                        |
-                        rate: {{ review.rate }}
-                        {% if review.rate == 5 %}
-                            {{ "⭐" * 5 }}
-                        {% elif review.rate == 4 %}
-                            {{ "⭐" * 4 }}
-                        {% elif review.rate == 3 %}
-                            {{ "⭐" * 3 }}
-                        {% elif review.rate == 2 %}
-                            {{ "⭐" * 2 }}
-                        {% elif review.rate == 1 %}
-                            {{ "⭐" * 1 }}
-                        {% else %}
-                            😡
-                        {% endif %}
+                        <span>{{ parks.parkName }}</span>
+                        <span>{{ review.weather }}</span>
+                        <span>
+                            {% if review.rate == 5 %}
+                                {{ "⭐" * 5 }}
+                            {% elif review.rate == 4 %}
+                                {{ "⭐" * 4 }}
+                            {% elif review.rate == 3 %}
+                                {{ "⭐" * 3 }}
+                            {% elif review.rate == 2 %}
+                                {{ "⭐" * 2 }}
+                            {% elif review.rate == 1 %}
+                                {{ "⭐" * 1 }}
+                            {% else %}
+                                😡
+                            {% endif %}
+                        </span>
+
                     </p>
                 </div>
             </div>
         {% endfor %}
-        </div>
     </div>
     <div class="modal" id="modal-post">
         <div class="modal-background" onclick='$("#modal-post").removeClass("is-active")'></div>
         <div class="modal-content">
             <div class="box" id="modalBox">
-                {{ parkName }} | {{ course }}
+                {{ parks.parkName }} | {{ parks.course[] }}
                 <div id="modalBoxEntry">
                     <div class="dropSelect" id="modalBEdrop">
                         <select class="form-select" id="mm">
@@ -178,11 +173,11 @@
                         </select>
                         <select class="form-select" id="rate">
                             <option selected>날씨</option>
-                            <option value=☀>{{ "☀" }}</option>
-                            <option value=🌤>{{ "🌤" }}</option>
-                            <option value=☁>{{ "☁" }}</option>
-                            <option value=☔>{{ "☔" }}</option>
-                            <option value=❄>{{ "❄" }}</option>
+                            <option value="☀">{{ "☀" }}</option>
+                            <option value="🌤">{{ "🌤" }}</option>
+                            <option value="☁">{{ "☁" }}</option>
+                            <option value="☔">{{ "☔" }}</option>
+                            <option value="❄">{{ "❄" }}</option>
                         </select>
                         <select class="form-select" id="rate">
                             <option selected>평점</option>
@@ -199,7 +194,7 @@
         </div>
     </div>
 </div>
-
+<section id="footer"></section>
 
 </body>
 </html>
