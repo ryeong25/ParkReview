@@ -118,7 +118,6 @@ function sign_up() {
 
 function sign_in() {
     let email = $("#input-email").val()
-    let userName = $("#input-userName").val()
     let password = $("#input-password").val()
 
     if (email == "") {

@@ -61,7 +61,7 @@
             </div>
         </header>
         <section class="mypage-contents container">
-            <div>
+            <div class="left">
                 <aside>
                     <ul>
                         <li>안녕하세요.
@@ -88,26 +88,31 @@
                     </ul>
                 </aside>
             </div>
-            <div class="myPark">
+            <div class="myPark right">
                 <div class="selectCard">
-                    <div class="card text-center role-button">
+                    <div class="card text-center role-button {% if parkId == 'all' %}{{ 'active' }}{% endif %}">
                         <div class="card-body">
                             <a href="/mypage/myParks/all">
                                 전체 공원
                             </a>
                         </div>
                     </div>
-                    <div class="card text-center role-button">
+                    <div class="card text-center role-button {% if parkId == 'finished' %}{{ 'active' }}{% endif %}">
                         <div class="card-body">
                             <a href="/mypage/myParks/finished">
                                 🏁 완주 공원
+                                {% for chk in user.parkCheck %}
+                                    {% if chk['finished'] == 1 %}
+                                        <span style="font-size: 10px;">⭐</span>
+                                    {% endif %}
+                                {% endfor %}
                             </a>
                         </div>
                     </div>
-                    <div class="card text-center role-button">
+                    <div class="card text-center role-button {% if parkId == 'favorite' %}{{ 'active' }}{% endif %}">
                         <div class="card-body">
                             <a href="/mypage/myParks/favorite">
-                                ❤ 즐겨찾는 공원
+                                💚 즐겨찾는 공원
                             </a>
                         </div>
                     </div>
@@ -126,7 +131,7 @@
                                             <div class="card-body">
                                                 <div>
                                                     <h5 class="card-title">
-                                                        ❤
+                                                        💚
                                                         <br>
                                                         {{ park.parkName }}
                                                     </h5>
@@ -136,7 +141,7 @@
                                                         {{ park.parkDesc }}
                                                     </p>
                                                 </div>
-                                                <a href="/park/{{ park.parkId }}" class="btn btn-primary">공원 정보</a>
+                                                <a href="/parkpage/{{ park.parkId }}" class="btn btn-primary">공원 정보</a>
                                             </div>
                                         </div>
                                     {% endif %}
@@ -162,7 +167,7 @@
                                                         {{ park.parkDesc }}
                                                     </p>
                                                 </div>
-                                                <a href="/park/{{ park.parkId }}" class="btn btn-primary">공원 정보</a>
+                                                <a href="/parkpage/{{ park.parkId }}" class="btn btn-primary">공원 정보</a>
                                             </div>
                                         </div>
                                     {% endif %}
@@ -179,7 +184,7 @@
                                         {% for check in user.parkCheck %}
                                             {% if check.parkId == park.parkId %}
                                                 {% if check.favorite == 1 %}
-                                                    ❤
+                                                💚
                                                 {% endif %}
                                                 {% if check.finished == 1 %}
                                                     🏁
@@ -195,7 +200,7 @@
                                         {{ park.parkDesc }}
                                     </p>
                                 </div>
-                                <a href="/park/{{ park.parkId }}" class="btn btn-primary">공원 정보</a>
+                                <a href="/parkpage/{{ park.parkId }}" class="btn btn-primary">공원 정보</a>
                             </div>
                         </div>
                         {% endif %}
@@ -203,10 +208,13 @@
                 </div>
                 {% endif %}
                 <!-- 리뷰 -->
+                
                 {% if 'reviewId' in currList %}
                 <div class="reviews row">
                     <!-- 리뷰 전체 -->
                     {% if parkId == 'all' %}
+                        <h1>리뷰 {{ currList['reviews'] | length }}개</h1>
+                        <!-- {{ currList['reviews'] }} -->
                         {% for review in currList['reviews'] %}
                             {% for park in parks %}
                                 {% if park.parkId == review.parkId %}
@@ -247,6 +255,7 @@
                         {% if review.parkId - pageId == 0 %}
                             {% for park in parks %}
                                 {% if park.parkId == review.parkId %}
+                                
                                 <div class="card text-center">
                                     <div class="card-body">
                                         <h5 class="card-title">
@@ -276,7 +285,6 @@
                                 </div>
                                 {% endif %}
                             {% endfor %}
-
                         {% endif %}
                     {% endfor %}
                 {% endif %}
