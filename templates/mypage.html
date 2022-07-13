@@ -25,7 +25,7 @@
     <!-- Font Awesome CSS -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     {#style css 파일 불러오기 (bulma css보다 아래 위치)#}
-    <link href="{{ url_for('static', filename='mystyle.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='mainstyle.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='mypage.css') }}" rel="stylesheet">
 
 </head>
@@ -242,11 +242,6 @@
                         {% endfor %}
                     {% else %}
                     <!-- 리뷰 공원별 -->
-	                <!-- parkId가 all이 아니라 공원의 id값일 때 -->
-                    <!-- for문으로 reviews의 review 배열을 돌리는데 -->
-                    <!-- 현재 review의 parkId값과 현재 페이지의 id값이 같으면 매치되는 리스트인데 -->
-                    <!-- 위의 값이 parkId의 공원 id값과 같다면 출력한다.-->
-
                     {% set pageId= parkId | int %}
                     {% for review in currList['reviews'] %} 
                         {% if review.parkId - pageId == 0 %}
@@ -302,18 +297,8 @@
                 <p class="text-center text-muted" >© 2022 항해 8기, F반4조 <a href="https://github.com/soularofdawn/ParkReview">ParkReview</a ></p>
                 </footer>
             </div>
-
+            
         </footer>
-        <!-- <script>
-            $(document).ready(function () {
-                let chk_load = 0;
-                if(!chk_load){
-                    $("#header").load("./header");  // 원하는 파일 경로를 삽입하면 된다
-                    $("#footer").load("./footer");  // 추가 인클루드를 원할 경우 이런식으로 추가
-                    chk_load=!chk_load;
-                }
-            });
-        </script> -->
     </div>
 </body>
 
