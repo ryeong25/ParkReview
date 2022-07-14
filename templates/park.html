@@ -12,25 +12,34 @@
     <div class="Box columns is-centered card">
         <div class="parkBoxInfo notification">
             <div class="notification is-success is-one-fifths">{{ parks.parkName }}</div>
-            <div class="notification is-info is-one-fifths">{{ parks.runningTime }}</div>
+            <div class="notification is-info is-one-fifths">평균: {{ parks.runningTime }}</div>
         </div>
         <div class="parkBoxImage column">
-
+            <img src="../static/course_image/none.png" alt="">
         </div>
         <div class="notification">
-            <div class="parkBoxDesc column">{{ parks.parkDesc }}</div>
-            <div class="parkBoxLocation column">{{ parks.parkLocation }}</div>
+            <div class="parkBoxTitle column">
+                <h1>{{ parks.parkName }}</h1>
+            </div>
+            <div class="parkBoxDesc column border-bottom">{{ parks.parkDesc }}</div>
+            <div class="parkBoxLocation column" style="font-size: 12px;">{{ parks.parkLocation }}</div>
         </div>
         
         <div class="parkBoxCourse selectCard">
             <div class="courseBox column card text-center btn reviewBtn">
-                <img src="../static/course_image/none.png">
+                <div class="img-box">
+                    <img src="../static/course_image/none.png">
+                </div>
             </div>
             <div class="courseBox column card text-center btn reviewBtn">
-                <img src="../static/course_image/course.{{parkId}}-0.png">
+                <div class="img-box">
+                    <img src="../static/course_image/course.{{parkId}}-0.png">
+                </div>
             </div>
             <div class="courseBox column card text-center btn reviewBtn">
-                <img src="../static/course_image/course.{{parkId}}-1.jpg">
+                <div class="img-box">
+                    <img src="../static/course_image/course.{{parkId}}-1.jpg">
+                </div>
             </div>
         </div>
         <div class="parkBoxModalBtn">
