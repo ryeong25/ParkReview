@@ -1,3 +1,4 @@
+
 function toggle_sign_up() {
     $("#sign-up-box").toggleClass("is-hidden")
     $("#userName-box").toggleClass("is-hidden")
