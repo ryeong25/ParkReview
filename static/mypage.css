@@ -5,16 +5,22 @@
     flex-direction: column;
     justify-content: space-between;
 }
+
+.mypage-contents {
+    width: 100%;
+    display: flex;
+}
+
+.left {
+    flex: 1 1 260px;
+}
+
 .mypage-contents ul,
 .mypage-contents li {
     list-style: none;
     padding: 0;
     margin: 0;
     color: inherit;
-}
-
-.mypage-contents {
-    flex-wrap: wrap;
 }
 
 .mypage-contents > div {
@@ -70,15 +76,6 @@
     gap: 10px;
     padding-top: 20px;
 }
-.reviews > * {
-    width: 70%;
-}
-
-.mypage-contents {
-    display: flex;
-    min-height: 50vh;
-    gap: 2em;
-}
 
 .mypage-contents aside {
     background: #fff;
@@ -93,18 +90,22 @@
 }
 
 .mypage-contents .myPark {
-    flex: 1 1 75%;
+    flex: 1 1 1000px;
+}
+
+.reviews > * {
+    width: 75%;
 }
 
 .selectCard {
-    max-width: 80%;
+    max-width: 87.5%;
     margin: auto;
     display: flex;
     padding: 0 3em;
     gap: 10px;
 }
 
-.selectCard>* {
+.selectCard > * {
     flex: 1 1 30%;
 }
 .card-body {
@@ -135,6 +136,10 @@
 }
 
 @media (max-width: 1000px) {
+    .mypage-contents {
+        flex-wrap: wrap;
+    }
+    
     .show-at-lg {
         display: none;
     }
