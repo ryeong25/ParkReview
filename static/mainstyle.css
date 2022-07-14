@@ -26,6 +26,9 @@ body {
     margin: 10px auto;
     max-width: 100vw;
 }
+.fs-1 {
+    font-family: 'Single Day', cursive;
+}
 .card-body > button  {
     width:300px;
     max-width: 100vw;
