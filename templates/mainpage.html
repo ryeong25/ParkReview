@@ -34,6 +34,11 @@
 <!--    {#style css 파일 불러오기 (bulma css보다 아래 위치)#}-->
     <link href="{{ url_for('static', filename='mainstyle.css') }}" rel="stylesheet">
 
+<!--    모바일 미리보기시 opg-->
+    <meta property="og:title" content="ParkReview"/>
+    <meta property="og:description" content="산책 할 수 있는 공원으로 달립니다"/>
+    <meta property="og:image" content="{{ url_for('static', filename='ogimage.png') }}"/>
+
 </head>
 <body>
     {% include('header.html') %}
