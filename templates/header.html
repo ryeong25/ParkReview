@@ -30,6 +30,24 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='mainstyle.css') }}" rel="stylesheet">
 
+    <script>
+        function sign_out() {
+            $.ajax({
+                type: "POST",
+                url: "/api/sign_out",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        $.cookie('mytoken', response['token'], {path: '/'});
+                        window.location.replace("/login")
+                    } else {
+                        alert(response['msg'])
+                    }
+                }
+            });
+        }
+    </script>
+
     <div class="mytitle">
         <div class="container">
             <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
@@ -40,7 +58,8 @@
                     <span class="fs-4">🏃달려라01🏃</span>
                 </a>
                 <ul class="nav nav-pills">
-                    <button type="button" onclick="window.location.href='/mypage'" class="button is-success is-outlined me-3" id="mypageBtn">마이페이지</button>
+                    <button type="button" onclick="window.location.href='/mypage'" class="button is-success is-outlined me-3" id="mypageBtn">Mypage</button>
+                    <button type="button" onclick="sign_out()" class="button is-success is-outlined me-3" id="logoutBtn">Logout</button>
                 </ul>
             </header>
         </div>
