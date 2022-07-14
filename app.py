@@ -173,7 +173,7 @@ def mypage():
         return redirect(url_for("login", msg="다시 로그인 해주세요!"))
     parks = list(db.Parks.find({}))
     currList = parks
-    return redirect('/mypage/myParks/all')
+    return getMyParks(all)
 
 
 # 나의 공원
