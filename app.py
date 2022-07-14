@@ -18,6 +18,7 @@ ca = certifi.where()
 client = MongoClient('mongodb+srv://Sparta:SpArTae8737be698@cluster0.licyu.mongodb.net/?retryWrites=true&w=majority',tlsCAFile=ca)
 db = client.parkReview
 
+
 @app.route('/api/checkLogin')
 def checkLogin():
     token_receive = request.cookies.get('mytoken')
@@ -36,6 +37,7 @@ def checkLogin():
 
 @app.route('/')
 def main():
+
     try:
         user, userId = checkLogin()
     except:
@@ -188,7 +190,7 @@ def postReview():
         user, userId = checkLogin()
     except:
         return redirect(url_for("login", msg="다시 로그인 해주세요!"))
-    currList = db.Reviews.find_one({'reviewId':userId})
+
     # parkId_receive = request.form['parkId_give']
     date_receive = request.form['date_give']
     rate_receive = request.form['rate_give']
@@ -204,13 +206,14 @@ def postReview():
         'comment': comment_receive
     }
 
-    num = len(currList['reviews'])
-    test = currList['reviews']
-
-    test.append(doc)
-    db.Reviews.update_one({'reviewId': userId},{"$set" : {"reviews": test}})
-
-    return jsonify({'msg': '리뷰 저장 완료'})
+    if currList == none :
+        db.Reviews.insert_one(doc)
+        return jsonify({'msg': '리뷰 저장 완료'})
+    else:
+        new = currList['reviews']
+        new.append(doc)
+        db.Reviews.update_one({'reviewId': userId}, {"$set": {"reviews": new}})
+        return jsonify({'msg': '리뷰 저장 완료'})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
