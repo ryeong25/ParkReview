@@ -50,3 +50,9 @@
     align-content: center;
     float: right;
 }
+.parkBoxInfo .notification {
+    margin:0 !important;
+    text-align: center;
+    flex:0 1 180px;
+    padding: 20px 30px !important;
+}
