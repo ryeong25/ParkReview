@@ -1,0 +1,10 @@
+diff a/app.py b/app.py	(rejected hunks)
+@@ -3,7 +3,7 @@
+ import jwt
+ import datetime
+ import hashlib
+-from flask import Flask, render_template, jsonify, request, redirect, url_for , json
++from flask import Flask, render_template, jsonify, request, redirect, url_for
+ from werkzeug.utils import secure_filename
+ from datetime import timedelta
+ 
