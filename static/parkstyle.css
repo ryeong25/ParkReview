@@ -92,7 +92,7 @@ body .parkBoxInfo .notification {
 }
 
 .parkBoxImage {
-    min-height: 30vh;
+    min-height: 44vh;
     position: relative;
     overflow: hidden;
     margin: 1em 0;
