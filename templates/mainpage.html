@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        $(document).ready(function () {
+            var list = all_parks;
+            console.log(list);
+        })
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>F반4조 <ParkReview></title>
@@ -29,9 +36,7 @@
 
 </head>
 <body>
-    {#----------------header----------------#}
-    <section id="header"></section>
-    {#----------------main 공간=----------------#}
+    {% include('header.html') %}
     <section class="section-main">
         {# ----------main 카드들-------------#}
         <div class="container">
@@ -52,7 +57,7 @@
                                 <br>
                                 <div class="sub-content"><a>#합정역</a> <a>#쉬움</a> <a>#산책</a></div>
                             </div>
-                            <button onclick="window.location.href='/parkpage/'" class="button is-success is-light is-rounded ">달리러가기</button>
+                            <button onclick="window.location.href='/parkpage/0'" class="button is-success is-light is-rounded ">달리러가기</button>
                         </div>
                     </div>
                 </div>
@@ -72,7 +77,7 @@
                                 <br>
                                 <div class="sub-content"><a>#여의도</a> <a>#오리배</a> <a>#밤섬구경</a></div>
                             </div>
-                            <button onclick="window.location.href='/parkpage/'" class="button is-success is-light is-rounded ">달리러가기</button>
+                            <button onclick="window.location.href='/parkpage/1'" class="button is-success is-light is-rounded ">달리러가기</button>
 
                         </div>
                     </div>
@@ -93,15 +98,14 @@
                                 <br>
                                 <div class="sub-content"><a>#롯데월드구경</a> <a >#봄에는벚꽃</a> <a >#석촌호수</a></div>
                             </div>
-                            <button onclick="window.location.href='/parkpage/'" class="button is-success is-light is-rounded ">달리러가기</button>
+                            <button onclick="window.location.href='/parkpage/2'" class="button is-success is-light is-rounded ">달리러가기</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    {#----------------footer----------------#}
-    <section id="footer"></section>
+    {% include('footer.html') %}
 
     <!--header/footer 삽입-->
 
@@ -110,11 +114,6 @@
 <!--{#    {% endfor %}#}-->
 
     <script>
-        $(document).ready(function () {
-            $("#header").load("./header");  // 원하는 파일 경로를 삽입하면 된다
-            $("#footer").load("./footer");// 추가 인클루드를 원할 경우 이런식으로 추가#}
-        });
-
         // API키
         const API_KEY = 'b23c8020d88635be966aa7e1d3803114'
 
