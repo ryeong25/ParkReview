@@ -3,10 +3,14 @@
 <head>
 
     <link href="../static/parkstyle.css" rel="stylesheet">
-    <script src="../static/JS/park.js"></script>
+
 
 </head>
 <body>
+<div>
+    <input type="hidden" value={{parkId}} id="parkId">
+    <input type="hidden" value={{userId}} id="userId">
+</div>
 {% include('header.html') %}
 <div class="wrap">
     <div class="Box columns is-centered card">
@@ -83,7 +87,7 @@
         <div class="modal-background" onclick='$("#modal-post").removeClass("is-active")'></div>
         <div class="modal-content">
             <div class="box" id="modalBox">
-                {{ parks.parkName }} | {{ parks.course }}
+                {{ parks.parkName }} |
                 <div id="modalBoxEntry">
                     <div class="dropSelect" id="modalBEdrop">
                         <select class="form-select" id="mm">
@@ -136,7 +140,7 @@
                             <option value=31>31일</option>
 
                         </select>
-                        <select class="form-select select-weather" id="rate">
+                        <select class="form-select select-weather" id="weather">
                             <option selected>날씨</option>
                             <option value="☀">{{ "☀" }}</option>
                             <option value="🌤">{{ "🌤" }}</option>
@@ -153,7 +157,9 @@
                             <option value=5>{{ "⭐" * 5 }}</option>
                         </select>
                     </div>
-                    <div id="modalBEcomment"></div>
+                    <textarea class="textarea" placeholder="e.g. Hello world" id="comment"></textarea>
+                    <button class="column card btn reviewBtn" id="ReviewBtn">  완료  </button>
+
                 </div>
             </div>
         </div>
@@ -162,4 +168,5 @@
 {% include('footer.html') %}
 
 </body>
+<script src="../static/JS/park.js" ></script>
 </html>

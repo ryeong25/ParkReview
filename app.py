@@ -184,22 +184,32 @@ def getMyReviews(parkId):
 
 @app.route('/api/postMyReview', methods=['POST'])
 def postReview():
-
+    try:
+        user, userId = checkLogin()
+    except:
+        return redirect(url_for("login", msg="다시 로그인 해주세요!"))
     currList = db.Reviews.find_one({'reviewId':userId})
-    parkId_receive = request.form['parkId_give']
+    # parkId_receive = request.form['parkId_give']
     date_receive = request.form['date_give']
     rate_receive = request.form['rate_give']
     weather_receive = request.form['weather_give']
     comment_receive = request.form['comment_give']
 
     doc = {
-        'parkId': parkId_receive,
+        'parkId': 0,
+        'courseId': 0,
         'finished_at': date_receive,
         'rate': rate_receive,
         'weather': weather_receive,
         'comment': comment_receive
     }
-    currList.reviews.insert_one(doc)
+
+    num = len(currList['reviews'])
+    test = currList['reviews']
+
+    test.append(doc)
+    db.Reviews.update_one({'reviewId': userId},{"$set" : {"reviews": test}})
+
     return jsonify({'msg': '리뷰 저장 완료'})
 
 if __name__ == '__main__':

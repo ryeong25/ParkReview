@@ -1,14 +1,34 @@
+$(document).ready(function () {
+    let parkId = $('#parkId').value
+    let userId = $('#userId').value
+    let date = $('#mm').val() + '-' + $('#dd').val()
+    let weather = $('#weather').val()
+    let rate = $('#rate').val()
+    let comment = $('#comment').val()
+
+    $('#ReviewBtn').on('click', function () {
+        save_review()
+    })
+
+
+})
+
 function save_review() {
-    let date = $('#mm').val() + $('#dd').val()
+
+
+    let parkId = $('#parkId').value
+    let userId = $('#userId').value
+    let date = $('#mm').val() + '-' + $('#dd').val()
+    let weather = $('#weather').val()
     let rate = $('#rate').val()
     let comment = $('#comment').val()
 
     $.ajax({
         type: 'POST',
-        url: '/api/postMyReviews,
+        url: '/api/postMyReview',
         data: {
-            parkId_give: parkId,
-            selectedCourse,
+            // reviewId: userId,
+            // parkId_give: parkId,
             date_give: date,
             rate_give: rate,
             weather_give: weather,
