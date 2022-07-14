@@ -172,7 +172,7 @@ def getMyParks(parkId):
 @app.route('/mypage/myReviews/<parkId>')
 def getMyReviews(parkId):
     user=db.Users.find_one({'userId': 0})
-    parks=db.Parks.find({})
+    parks=list(db.Parks.find({}))
 
     userReviewId=user['reviewId']
     reviews=db.Reviews.find_one({'reviewId': userReviewId})
