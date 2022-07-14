@@ -24,18 +24,18 @@
         </div>
         
         <div class="parkBoxCourse selectCard">
-            <div class="courseBox column card text-center btn">
-                select
+            <div class="courseBox column card text-center btn reviewBtn">
+                <img src="../static/course_image/none.png">
             </div>
-            <div class="courseBox column card text-center btn">
-                {{ parks.course }}
+            <div class="courseBox column card text-center btn reviewBtn">
+                <img src="../static/course_image/course.{{parkId}}-0.png">
             </div>
-            <div class="courseBox column card text-center btn">
-                {{ parks.course }}
+            <div class="courseBox column card text-center btn reviewBtn">
+                <img src="../static/course_image/course.{{parkId}}-1.png">
             </div>
         </div>
         <div class="parkBoxModalBtn">
-            <button class="column card btn is-right" onclick='$("#modal-post").addClass("is-active")'>리뷰하기</button>
+            <button class="column card btn reviewBtn" onclick='$("#modal-post").addClass("is-active")'>리뷰하기</button>
         </div>
     </div>
     <div class="Box columns is-centered card">

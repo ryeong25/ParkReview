@@ -18,14 +18,18 @@
     padding-top: 20px;
 }
 
+.mypage-contents ul {
+    padding: 20px 0 0;
+}
+
 .mypage-contents li {
-    padding: 20px;
     text-align: center;
     background-color: transparent;
     border-color: #48c774;
     color: #686f6b;
     border-width: 2px;
     border-bottom-style: dotted;
+    padding: 0 30px;
 }
 .mypage-contents li:last-child {
     border-bottom: none;
@@ -46,10 +50,15 @@
     color: #fff;
 }
 
+.role-button .card-body {
+    padding: 0;
+}
+
 .role-button a {
     display: block;
     width: 100%;
     height: 100%;
+    padding: 1rem;
 }
 
 .parks,
@@ -65,6 +74,7 @@
 .mypage-contents {
     display: flex;
     min-height: 50vh;
+    gap: 2em;
 }
 
 .mypage-contents aside {
@@ -80,17 +90,19 @@
 }
 
 .mypage-contents .myPark {
-    flex: 1 1 78%;
+    flex: 1 1 75%;
 }
 
 .selectCard {
+    max-width: 80%;
+    margin: auto;
     display: flex;
     padding: 0 3em;
     gap: 10px;
 }
 
 .selectCard>* {
-    flex: 1 1 33%;
+    flex: 1 1 30%;
 }
 .card-body {
     display: flex;
@@ -109,6 +121,14 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+.card-title {
+    font-size: 20px;
+    font-weight: 700;
+}
+.card-text-sm {
+    font-size: 12px;
+    margin-bottom: 1rem;
 }
 
 @media (max-width: 900px) {
