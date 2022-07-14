@@ -23,7 +23,7 @@ def main():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user = db.Users.find_one({"email": payload["userId"]})
+        user = db.Users.find_one({"userId": payload["userId"]})
         return render_template("mainpage.html", user=user)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
@@ -33,15 +33,15 @@ def main():
 
 @app.route('/parkpage/<parkId>')
 def park(parkId):
-    intParkId = int(parkId)
     token_receive = request.cookies.get('mytoken')
+    intParkId = int(parkId)
     parks = db.Parks.find_one({"parkId": intParkId})
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         userId = int(payload['userId'])
         user = db.Users.find_one({'userId': userId}, {"_id": False})
         currList = db.Reviews.find_one({'reviewId': userId}, {"_id": False})
-        return render_template("park.html", user=user, parks=parks, currList=currList)
+        return render_template("park.html", user=user, parks=parks, currList=currList, parkId=intParkId)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("main"))
 
@@ -110,10 +110,6 @@ def api_login():
     result = db.Users.find_one({'email': email_receive, 'password': pw_hash})
     # 찾으면 JWT 토큰을 만들어 발급합니다.
     if result is not None:
-        # JWT 토큰에는, payloaduserId와 시크릿키가 필요합니다.
-        # 시크릿키가 있어야 토큰을 디코딩(=풀기) 해서 payload 값을 볼 수 있습니다.
-        # 아래에선 id와 exp를 담았습니다. 즉, JWT 토큰을 풀면 유저ID 값을 알 수 있습니다.
-        # exp에는 만료시간을 넣어줍니다. 만료시간이 지나면, 시크릿키로 토큰을 풀 때 만료되었다고 에러가 납니다.
         userId = result['userId']
         payload = {
             'userId': userId,
@@ -154,10 +150,10 @@ def check_dup():
 @app.route('/mypage')
 def mypage():
     user=db.Users.find_one({'userId': 0})
-    parks=list(db.Parks.find({'parkId': 0}))
+    parks=list(db.Parks.find({}))
     currList=parks
 
-    return redirect('/mypage/myParks/all')
+    return render_template("mypage.html", user=user, parks=parks, currList=currList)
 
 # 나의 공원
 @app.route('/mypage/myParks/<parkId>')
@@ -165,8 +161,6 @@ def getMyParks(parkId):
     user=db.Users.find_one({'userId': 0})
     parks=list(db.Parks.find({}))
     currList=parks
-
-    print('here')
 
     return render_template("mypage.html", user=user, parks=parks, currList=currList, parkId=parkId)
 
