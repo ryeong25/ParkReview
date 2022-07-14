@@ -102,6 +102,7 @@ body .parkBoxInfo .notification {
     width: 100%;
     position: absolute;
     top: 50%;
+    left: 0;
     transform: translateY(-50%);
 }
 
@@ -117,6 +118,8 @@ body .parkBoxDesc {
 
 .img-box img {
     height: 100%;
+    width: auto;
+    max-width: none;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -127,4 +130,22 @@ body .parkBoxDesc {
     position: relative;
     overflow: hidden;
     height: 150px;
+}
+
+body > div.wrap > div:nth-child(2) {
+    margin-top: 10px;
+}
+
+body > div.wrap > div:nth-child(1) > div.parkBoxModalBtn > button {
+    background-color: #48c774;
+    color: #fff;
+}
+
+body > div.wrap > div:nth-child(1) > div.parkBoxModalBtn > button:hover {
+    background-color: #53d581;
+}
+
+#modalBEdrop {
+    margin-bottom: 10px;
+    margin-top: 10px;
 }

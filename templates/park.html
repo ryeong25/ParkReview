@@ -4,7 +4,6 @@
 
     <link href="../static/parkstyle.css" rel="stylesheet">
 
-
 </head>
 <body>
 <div>
@@ -87,11 +86,11 @@
         <div class="modal-background" onclick='$("#modal-post").removeClass("is-active")'></div>
         <div class="modal-content">
             <div class="box" id="modalBox">
-                {{ parks.parkName }} |
+                <strong>{{ parks.parkName }}</strong>
                 <div id="modalBoxEntry">
                     <div class="dropSelect" id="modalBEdrop">
                         <select class="form-select" id="mm">
-                            <option selected>MM월</option>
+                            <option selected>--월</option>
                             <option value=01>1월</option>
                             <option value=02>2월</option>
                             <option value=03>3월</option>
@@ -106,7 +105,7 @@
                             <option value=12>12월</option>
                         </select>
                         <select class="form-select" id="dd">
-                            <option selected>DD일</option>
+                            <option selected>--일</option>
                             <option value=01>1일</option>
                             <option value=02>2일</option>
                             <option value=03>3일</option>
@@ -157,8 +156,8 @@
                             <option value=5>{{ "⭐" * 5 }}</option>
                         </select>
                     </div>
-                    <textarea class="textarea" placeholder="e.g. Hello world" id="comment"></textarea>
-                    <button class="column card btn reviewBtn" id="ReviewBtn">  완료  </button>
+                    <textarea class="textarea" placeholder="공원에 대한 리뷰를 입력하세요." id="comment"></textarea>
+                    <button class="column card btn reviewBtn" id="ReviewBtn" style="color: #278949">  올리기  </button>
 
                 </div>
             </div>
