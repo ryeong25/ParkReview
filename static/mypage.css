@@ -1,6 +1,9 @@
-
 .wrap {
-    min-height: calc(100vh - 5rem);
+    min-height: 100vh;
+    word-break: keep-all;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 .mypage-contents ul,
 .mypage-contents li {
@@ -131,11 +134,26 @@
     margin-bottom: 1rem;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
+    .show-at-lg {
+        display: none;
+    }
+    hr {
+        margin: 1rem 0;
+    }
+    .left,
+    aside {
+        width: 100%;
+    }
+    .left {
+        padding: 0 10%;
+    }
     .mypage-contents {
         justify-content: center;
+        gap: 5px;
     }
     .selectCard {
         flex-wrap: wrap;
+        padding: 0;
     }
 }

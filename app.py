@@ -3,7 +3,7 @@ import certifi
 import jwt
 import datetime
 import hashlib
-from flask import Flask, render_template, jsonify, request, redirect, url_for , json
+from flask import Flask, render_template, jsonify, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from datetime import timedelta
 
@@ -105,6 +105,7 @@ def api_login():
     pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
 
     result = db.Users.find_one({'email': email_receive, 'password': pw_hash})
+
     # 찾으면 JWT 토큰을 만들어 발급합니다.
     if result is not None:
         userId = result['userId']
@@ -148,7 +149,7 @@ def mypage():
         return redirect(url_for("login", msg="다시 로그인 해주세요!"))
     parks=list(db.Parks.find({}))
     currList=parks
-    return render_template("mypage.html", user=user, parks=parks, currList=currList)
+    return redirect('/mypage/myParks/all')
 
 # 나의 공원
 @app.route('/mypage/myParks/<parkId>')
@@ -159,10 +160,7 @@ def getMyParks(parkId):
         return redirect(url_for("login", msg="다시 로그인 해주세요!"))
 
     parkCheck = user['parkCheck']
-    find = parkCheck['parkId']
-
-    print(find)
-    parks=list(db.Parks.find({'userId':userId}))
+    parks=list(db.Parks.find({}))
     currList=parks
 
     return render_template("mypage.html", user=user, parks=parks, currList=currList, parkId=parkId)
@@ -178,6 +176,7 @@ def getMyReviews(parkId):
 
     userReviewId=user['reviewId']
     reviews=db.Reviews.find_one({'reviewId': userReviewId})
+    print(reviews)
 
     return render_template("mypage.html", user=user, parks=parks, currList=reviews, parkId=parkId)
 
