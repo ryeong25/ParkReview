@@ -18,33 +18,42 @@ ca = certifi.where()
 client = MongoClient('mongodb+srv://Sparta:SpArTae8737be698@cluster0.licyu.mongodb.net/?retryWrites=true&w=majority',tlsCAFile=ca)
 db = client.parkReview
 
-@app.route('/')
-def main():
+@app.route('/api/checkLogin')
+def checkLogin():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user = db.Users.find_one({"userId": payload["userId"]})
-        return render_template("mainpage.html", user=user)
+        userId = int(payload['userId'])
+        user = db.Users.find_one({'userId': userId})
+        return user, userId
     except jwt.ExpiredSignatureError:
-        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+        return redirect(url_for('login.html', msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
-        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+        return redirect(url_for('login.html', msg="로그인 시간이 만료되었습니다."))
+    except:
+        return redirect(url_for('login.html', msg="다시 로그인 해주세요!"))
+
+
+@app.route('/')
+def main():
+    try:
+        user, userId = checkLogin()
+    except:
+        return redirect(url_for("login", msg="다시 로그인 해주세요!"))
+    return render_template('mainpage.html', user=user, userId=userId)
+
 
 
 @app.route('/parkpage/<parkId>')
 def park(parkId):
-    token_receive = request.cookies.get('mytoken')
+    try:
+        user, userId = checkLogin()
+    except :
+        return redirect(url_for("login", msg="다시 로그인 해주세요!"))
     intParkId = int(parkId)
     parks = db.Parks.find_one({"parkId": intParkId})
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        userId = int(payload['userId'])
-        user = db.Users.find_one({'userId': userId}, {"_id": False})
-        currList = db.Reviews.find_one({'reviewId': userId}, {"_id": False})
-        return render_template("park.html", user=user, parks=parks, currList=currList, parkId=intParkId)
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("main"))
-
+    currList = db.Reviews.find_one({'reviewId': userId}, {"_id": False})
+    return render_template("park.html", user=user, parks=parks, currList=currList, parkId=intParkId)
 
 @app.route('/header')
 def header():
@@ -57,18 +66,6 @@ def footer():
 #################################
 ##  HTML을 주는 부분             ##
 #################################
-@app.route('/&')
-def start():
-    token_receive = request.cookies.get('mytoken')
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        userId = int(payload['userId'])
-        user_info = db.Users.find_one({"userId": userId})
-        return render_template('index.html', nickname=user_info["nick"])
-    except jwt.ExpiredSignatureError:
-        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
-    except jwt.exceptions.DecodeError:
-        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 @app.route('/login')
 def login():
@@ -123,20 +120,16 @@ def api_login():
 
 @app.route('/api/sign_out', methods=['POST'])
 def api_logout():
-    token_receive = request.cookies.get('mytoken')
     try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        userId = int(payload['userId'])
-        payload = {
-            'userId': userId,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=0)
-        }
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-        return jsonify({'result': 'success', 'token': token})
-    except jwt.ExpiredSignatureError:
-        return jsonify({'result': 'fail', 'msg': '로그인 시간이 만료되었습니다.'})
-    except jwt.exceptions.DecodeError:
-        return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
+        user, userId = checkLogin()
+    except:
+        return redirect(url_for("login", msg="다시 로그인 해주세요!"))
+    payload = {
+        'userId': userId,
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=0)
+    }
+    token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+    return jsonify({'result': 'success', 'token':token})
 
 
 @app.route('/api/sign_up/check_dup', methods=['POST'])
@@ -149,17 +142,27 @@ def check_dup():
 # 마이페이지
 @app.route('/mypage')
 def mypage():
-    user=db.Users.find_one({'userId': 0})
+    try:
+        user, userId = checkLogin()
+    except :
+        return redirect(url_for("login", msg="다시 로그인 해주세요!"))
     parks=list(db.Parks.find({}))
     currList=parks
-
     return render_template("mypage.html", user=user, parks=parks, currList=currList)
 
 # 나의 공원
 @app.route('/mypage/myParks/<parkId>')
 def getMyParks(parkId):
-    user=db.Users.find_one({'userId': 0})
-    parks=list(db.Parks.find({}))
+    try:
+        user, userId = checkLogin()
+    except:
+        return redirect(url_for("login", msg="다시 로그인 해주세요!"))
+
+    parkCheck = user['parkCheck']
+    find = parkCheck['parkId']
+
+    print(find)
+    parks=list(db.Parks.find({'userId':userId}))
     currList=parks
 
     return render_template("mypage.html", user=user, parks=parks, currList=currList, parkId=parkId)
@@ -167,7 +170,10 @@ def getMyParks(parkId):
 # 나의 리뷰
 @app.route('/mypage/myReviews/<parkId>')
 def getMyReviews(parkId):
-    user=db.Users.find_one({'userId': 0})
+    try:
+        user, userId = checkLogin()
+    except:
+        return redirect(url_for("login", msg="다시 로그인 해주세요!"))
     parks=list(db.Parks.find({}))
 
     userReviewId=user['reviewId']
@@ -175,24 +181,12 @@ def getMyReviews(parkId):
 
     return render_template("mypage.html", user=user, parks=parks, currList=reviews, parkId=parkId)
 
-@app.route('/api/checkLogin')
-def checkLogin():
-    token_receive = request.cookies.get('mytoken')
-
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        userinfo = db.Users.find_one({'id': payload['id']}, {'_id': 0})
-        return jsonify({'result': 'success', 'nickname': userinfo['nick']})
-    except jwt.ExpiredSignatureError:
-        return jsonify({'result': 'fail', 'msg': '로그인 시간이 만료되었습니다.'})
-    except jwt.exceptions.DecodeError:
-        return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
 
 
+@app.route('/api/postMyReview', methods=['POST'])
+def postReview():
 
-@app.route('/api/postMyReviews/<reviewId>', methods=['POST'])
-def postReview(reviewId):
-    currList = db.Reviews.find_one({'reviewId':reviewId})
+    currList = db.Reviews.find_one({'reviewId':userId})
     parkId_receive = request.form['parkId_give']
     date_receive = request.form['date_give']
     rate_receive = request.form['rate_give']

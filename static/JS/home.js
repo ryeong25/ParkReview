@@ -10,12 +10,9 @@ function sign_out() {
         url: "/api/sign_out",
         data: {},
         success: function (response) {
-            if (response['result'] == 'success') {
-                $.cookie('mytoken', response['token'], {path: '/'});
-                window.location.replace("/login")
-            } else {
-                alert(response['msg'])
-            }
+            alert('로그아웃 되었습니다!')
+            $.cookie('mytoken', response['token'], {path: '/'});
+            window.location.replace("/login")
         }
     });
 }
