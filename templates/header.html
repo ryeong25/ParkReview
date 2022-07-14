@@ -1,4 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <title>달려라</title>
+    <meta property="og:title" content="스위터 - 세상을 달달하게"/>
+    <meta property="og:description" content="mini project for Web Plus"/>
+    <meta property="og:image" content="{{ url_for('static', filename='ogimg.png') }}"/>
+
+
+    <!--부트스트랩 관련 CDN Link    -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+          crossorigin="anonymous">
+    <!--JQuery 관련 CDN Link    -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <!--  css_style -->
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+
+    <!-- Bulma CSS 링크 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- Font Awesome CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='mainstyle.css') }}" rel="stylesheet">
 
     <div class="mytitle">
         <div class="container">
@@ -7,17 +37,10 @@
                     <svg class="bi me-2" width="40" height="32">
                         <use xlink:href="#bootstrap"></use>
                     </svg>
-                    {#로고/배너#}
                     <span class="fs-4">🏃달려라01🏃</span>
                 </a>
-                {#공원페이지/마이페이지 버튼#}
                 <ul class="nav nav-pills">
-
-<!--                  <button type="button" href="/parkpage" class="button is-success is-outlined me-3">공원페이지</button>-->
-<!--                  <button type="button" href="/mypage" class="button is-success is-outlined me-3">마이페이지</button>-->
-                    <button type="button" onclick="window.location.href='/mypage'" class="button is-success is-outlined me-3">마이페이지</button>
-                    <button type="button" onclick="window.location.href='/login'" class="button is-success is-outlined me-3">로그아웃</button>
-
+                    <button type="button" onclick="window.location.href='/mypage'" class="button is-success is-outlined me-3" id="mypageBtn">마이페이지</button>
                 </ul>
             </header>
         </div>

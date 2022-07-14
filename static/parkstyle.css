@@ -41,4 +41,11 @@
 }
 
 .parkBoxModalBtn{
+    display: inline-block;
+
+}
+
+.reviewBtn{
+    align-content: center;
+    float: right;
 }

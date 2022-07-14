@@ -28,6 +28,24 @@
     <link href="{{ url_for('static', filename='mainstyle.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='mypage.css') }}" rel="stylesheet">
 
+
+    <script>
+        function sign_out() {
+            $.ajax({
+                type: "POST",
+                url: "/api/sign_out",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        $.cookie('mytoken', response['token'], {path: '/'});
+                        window.location.replace("/login")
+                    } else {
+                        alert(response['msg'])
+                    }
+                }
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -52,7 +70,7 @@
                             {#<li class="nav-item"><button href="/loginpage" class="button is-success is-light is-rounded ">logIn</button></li>#}
 
                             <!-- use -->
-                            <button type="button" onclick="window.location.href='/logout'" class="button is-success is-outlined me-3">
+                            <button type="button" onclick="sign_out()" class="button is-success is-outlined me-3">
                                 Logout
                             </button>
                         </ul>
@@ -117,7 +135,6 @@
                         </div>
                     </div>
                 </div>
-                <hr>
                 <!-- 공원 -->
                 {% if 'parkId' in currList[0] %}
                 <div class="parks row">
@@ -133,11 +150,14 @@
                                                     <h5 class="card-title">
                                                         💚
                                                         <br>
+                                                        <br>
                                                         {{ park.parkName }}
                                                     </h5>
                                                     <p class="card-text">
                                                         {{ park.parkLocation }}
-                                                        <hr>
+                                                    </p>
+                                                    <br>
+                                                    <p class="card-text-sm">
                                                         {{ park.parkDesc }}
                                                     </p>
                                                 </div>
@@ -159,11 +179,14 @@
                                                     <h5 class="card-title">
                                                         🏁
                                                         <br>
+                                                        <br>
                                                         {{ park.parkName }}
                                                     </h5>
                                                     <p class="card-text">
                                                         {{ park.parkLocation }}
-                                                        <hr>
+                                                    </p>
+                                                    <br>
+                                                    <p class="card-text-sm">
                                                         {{ park.parkDesc }}
                                                     </p>
                                                 </div>
@@ -187,8 +210,9 @@
                                                 💚
                                                 {% endif %}
                                                 {% if check.finished == 1 %}
-                                                    🏁
+                                                🏁
                                                 {% endif %}
+                                                <br>
                                             {% endif %}
                                         {% endfor %}
                                         <br>
@@ -196,9 +220,11 @@
                                     </h5>
                                     <p class="card-text">
                                         {{ park.parkLocation }}
-                                        <hr>
-                                        {{ park.parkDesc }}
                                     </p>
+                                    <br>
+                                    <p class="card-text-sm">
+                                        {{ park.parkDesc }}
+                                    <p>
                                 </div>
                                 <a href="/parkpage/{{ park.parkId }}" class="btn btn-primary">공원 정보</a>
                             </div>
