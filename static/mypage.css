@@ -132,7 +132,7 @@
     margin-bottom: 1rem;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
     .show-at-lg {
         display: none;
     }
@@ -148,6 +148,7 @@
     }
     .mypage-contents {
         justify-content: center;
+        gap: 5px;
     }
     .selectCard {
         flex-wrap: wrap;
