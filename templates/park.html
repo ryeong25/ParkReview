@@ -3,7 +3,6 @@
 <head>
 
     <link href="../static/parkstyle.css" rel="stylesheet">
-    <link href="../static/mainstyle.css" rel="stylesheet">
     <script src="../static/JS/park.js"></script>
 
 </head>
@@ -31,7 +30,7 @@
                 <img src="../static/course_image/course.{{parkId}}-0.png">
             </div>
             <div class="courseBox column card text-center btn reviewBtn">
-                <img src="../static/course_image/course.{{parkId}}-1.png">
+                <img src="../static/course_image/course.{{parkId}}-1.jpg">
             </div>
         </div>
         <div class="parkBoxModalBtn">
@@ -40,6 +39,7 @@
     </div>
     <div class="Box columns is-centered card">
         {% for review in currList['reviews'] %}
+        {% if review.parkId - parkId == 0%}
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">
@@ -67,6 +67,7 @@
                     </p>
                 </div>
             </div>
+        {% endif %}
         {% endfor %}
     </div>
     <div class="modal" id="modal-post">
@@ -126,7 +127,7 @@
                             <option value=31>31일</option>
 
                         </select>
-                        <select class="form-select" id="rate">
+                        <select class="form-select select-weather" id="rate">
                             <option selected>날씨</option>
                             <option value="☀">{{ "☀" }}</option>
                             <option value="🌤">{{ "🌤" }}</option>
@@ -134,7 +135,7 @@
                             <option value="☔">{{ "☔" }}</option>
                             <option value="❄">{{ "❄" }}</option>
                         </select>
-                        <select class="form-select" id="rate">
+                        <select class="form-select select-star" id="rate">
                             <option selected>평점</option>
                             <option value=1>{{ "⭐" * 1 }}</option>
                             <option value=2>{{ "⭐" * 2 }}</option>
