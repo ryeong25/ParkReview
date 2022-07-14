@@ -51,12 +51,15 @@
     float: right;
 }
 
-.parkBoxInfo .notification {
-    margin:0 !important;
+body .parkBoxInfo.notification {
+    padding: 15px 20px;
+    margin-bottom: 0;
+}
+body .parkBoxInfo .notification {
+    margin:0;
     text-align: center;
-    flex:0 1 180px;
-    padding: 20px 30px !important;
-
+    padding: 10px 30px;
+}
 
 /***********/
 /* CSS추가 */
@@ -66,13 +69,62 @@
     display: flex;
     gap: 8px;
 }
+
 .form-select {
     flex: 1 1 25%;
+    background-color: #fff;
 }
+
 .select-weather {
     flex: 0 0 20px;
 }
+
 .select-star {
     flex: 1 1 50%;
+}
 
+.parkBoxInfo .notification {
+    background-color: transparent !important;
+    color: #48c774 !important;
+    font-size: 12px;
+    border: 1px solid #48c774;
+    background-color: #fff !important;
+}
+
+.parkBoxImage {
+    min-height: 30vh;
+    position: relative;
+    overflow: hidden;
+    margin: 1em 0;
+}
+
+.parkBoxImage img {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.parkBoxTitle h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+body .parkBoxDesc {
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+}
+
+.img-box img {
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.img-box {
+    position: relative;
+    overflow: hidden;
+    height: 150px;
 }
