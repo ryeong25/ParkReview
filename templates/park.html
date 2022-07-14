@@ -51,7 +51,8 @@
     </div>
     <div class="Box columns is-centered card">
         {% for review in currList['reviews'] %}
-        {% if review - parkId == 0%}
+        {% if review.parkId == True %}
+        {% if review.parkId - parkId == 0%}
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">
@@ -79,6 +80,7 @@
                     </p>
                 </div>
             </div>
+        {% endif %}
         {% endif %}
         {% endfor %}
     </div>
