@@ -50,3 +50,21 @@
     align-content: center;
     float: right;
 }
+
+/***********/
+/* CSS추가 */
+/***********/
+
+.dropSelect {
+    display: flex;
+    gap: 8px;
+}
+.form-select {
+    flex: 1 1 25%;
+}
+.select-weather {
+    flex: 0 0 20px;
+}
+.select-star {
+    flex: 1 1 50%;
+}
